@@ -1,0 +1,70 @@
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+    html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    body { background: #FFFFFF; }
+
+    /* Cormorant is a light-cut serif: give display type a confident default weight */
+    .font-serif { font-weight: 500; }
+
+    /* True masonry via CSS columns */
+    .masonry { column-gap: 1.25rem; }
+    @media (min-width: 640px)  { .masonry { column-count: 2; } }
+    @media (min-width: 1024px) { .masonry { column-count: 3; } }
+    .masonry > figure { break-inside: avoid; margin-bottom: 1.25rem; }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1); }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* Subtle image zoom on hover */
+    .ph-img { transition: transform .6s cubic-bezier(.22,.61,.36,1), filter .4s ease; }
+    .ph-card:hover .ph-img { transform: scale(1.04); }
+
+    /* Auto-hiding header: уезжает при скролле вниз, возвращается вверх/по курсору */
+    #nav { transition: transform .4s cubic-bezier(.22,.61,.36,1), background-color .3s ease, box-shadow .3s ease; }
+    #nav.nav-hidden { transform: translateY(-100%); }
+
+    /* Lightbox */
+    #lightbox { transition: opacity .35s ease; }
+
+    /* Letter accents */
+    .eyebrow { letter-spacing: .28em; }
+
+    /* Spotlight border: 1px ring that follows the cursor */
+    .spot {
+      position: relative;
+      --spot-x: -9999px; --spot-y: -9999px;
+      --spot-size: 460px;
+      --spot-rgb: 155, 106, 130;   /* accent #9B6A82 */
+      --spot-a: .55;
+    }
+    .spot::before {
+      content: '';
+      position: absolute; inset: 0;
+      border-radius: inherit;
+      padding: 1px;
+      background: radial-gradient(circle var(--spot-size) at var(--spot-x) var(--spot-y),
+                  rgba(var(--spot-rgb), var(--spot-a)), transparent 62%);
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+              mask-composite: exclude;
+      opacity: 0;
+      transition: opacity .35s ease;
+      pointer-events: none;
+    }
+    .spot:hover::before { opacity: 1; }
+
+    /* Staggered content inside a revealed card */
+    .stg { opacity: 0; transform: translateY(10px);
+           transition: opacity .55s ease var(--d, 0s), transform .55s cubic-bezier(.22,.61,.36,1) var(--d, 0s); }
+    .reveal.in .stg { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .stg { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .spot::before { display: none; }
+      .ph-img { transition: none !important; }
+      #nav { transition: none !important; }
+      html { scroll-behavior: auto; }
+    }

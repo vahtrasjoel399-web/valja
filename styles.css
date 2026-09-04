@@ -1,24 +1,176 @@
-    @import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Manrope:wght@400;500;600&display=swap');
 
     html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-    body { background: #FFFFFF; }
+    body { background: #F8F6F1; line-height: 1.6; letter-spacing: -.008em; }
 
-    /* Cormorant is a light-cut serif: give display type a confident default weight */
+    /* Editorial serif for headlines, quiet geometric sans for long copy */
     .font-serif { font-weight: 500; }
+
+    .hero-photo {
+      object-position: 38% center;
+    }
+    .hero-shade {
+      background: linear-gradient(to top, rgba(25, 22, 19, .72), rgba(25, 22, 19, .14) 70%);
+    }
+    @media (min-width: 768px) {
+      .hero-shade {
+        background: linear-gradient(to left, rgba(248, 246, 241, .98) 0%, rgba(248, 246, 241, .84) 35%, rgba(248, 246, 241, .18) 65%, transparent 82%);
+      }
+    }
+
+    .hero-copy .reveal:nth-child(1) { transition-delay: .08s; }
+    .hero-copy .reveal:nth-child(2) { transition-delay: .18s; }
+    .hero-copy .reveal:nth-child(3) { transition-delay: .30s; }
+    .hero-copy .reveal:nth-child(4) { transition-delay: .42s; }
+    .hero-scroll span:last-child { transform-origin: left; animation: scroll-line 2.1s ease-in-out infinite; }
+    @keyframes scroll-line {
+      0%, 100% { transform: scaleX(.35); opacity: .45; }
+      50% { transform: scaleX(1); opacity: 1; }
+    }
+
+    #scrollProgress {
+      position: absolute;
+      inset: auto auto -1px 0;
+      width: 100%;
+      height: 2px;
+      background: #8A6F60;
+      transform: scaleX(0);
+      transform-origin: left center;
+      will-change: transform;
+    }
+
+    #rigCanvas {
+      transition: opacity .12s linear, filter .12s linear;
+      will-change: transform, opacity, filter;
+    }
+    #photographerPortrait {
+      position: absolute;
+      z-index: 15;
+      top: 50%;
+      right: 7%;
+      width: min(34vw, 420px, 54vh);
+      opacity: 0;
+      pointer-events: none;
+      will-change: transform, opacity;
+    }
+    .about-photo-placeholder {
+      position: relative;
+      display: flex;
+      aspect-ratio: 4 / 5;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid rgba(138,111,96,.25);
+      border-radius: 1.5rem;
+      background:
+        radial-gradient(circle at 68% 22%, rgba(255,255,255,.9), transparent 28%),
+        linear-gradient(145deg, #eee7de 0%, #d8c9bc 52%, #bda99a 100%);
+      box-shadow: 0 35px 80px -44px rgba(39,35,31,.65);
+    }
+    .about-photo-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border: 1px solid rgba(255,255,255,.48);
+      border-radius: 1.1rem;
+    }
+    .about-photo-placeholder::after {
+      content: '';
+      position: absolute;
+      width: 70%;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: rgba(248,246,241,.28);
+      filter: blur(2px);
+    }
+    .about-photo-monogram {
+      position: relative;
+      z-index: 1;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(4.5rem, 9vw, 8.5rem);
+      font-weight: 500;
+      line-height: .8;
+      letter-spacing: -.08em;
+      color: rgba(77,61,52,.72);
+      transform: translateX(-.05em);
+    }
+    .about-photo-line {
+      position: relative;
+      z-index: 1;
+      width: 42px;
+      height: 1px;
+      margin: 1.35rem 0 .9rem;
+      background: rgba(77,61,52,.38);
+    }
+    .about-photo-label {
+      position: relative;
+      z-index: 1;
+      max-width: 190px;
+      text-align: center;
+      font-size: 10px;
+      font-weight: 600;
+      line-height: 1.5;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(77,61,52,.62);
+    }
+    @media (max-width: 639px) {
+      #photographerPortrait {
+        top: 9%;
+        right: auto;
+        left: 50%;
+        width: min(46vw, 190px);
+      }
+      .about-photo-placeholder { border-radius: 1.1rem; }
+      .about-photo-monogram { font-size: 4.7rem; }
+      .about-photo-line { margin: 1rem 0 .65rem; }
+      .about-photo-label { max-width: 145px; font-size: 8px; }
+    }
 
     /* True masonry via CSS columns */
     .masonry { column-gap: 1.25rem; }
     @media (min-width: 640px)  { .masonry { column-count: 2; } }
     @media (min-width: 1024px) { .masonry { column-count: 3; } }
     .masonry > figure { break-inside: avoid; margin-bottom: 1.25rem; }
+    .ph-card {
+      --photo-x: 0px;
+      --photo-y: 0px;
+      border-radius: 1.1rem;
+      box-shadow: 0 18px 45px -38px rgba(39,35,31,.45);
+      transition: box-shadow .5s ease, translate .5s cubic-bezier(.22,.61,.36,1);
+    }
+    .ph-card:hover {
+      translate: 0 -4px;
+      box-shadow: 0 28px 58px -38px rgba(39,35,31,.62);
+    }
+    .gallery-enter { animation: gallery-enter .72s cubic-bezier(.2,.75,.25,1) both; animation-delay: var(--card-delay, 0ms); }
+    @keyframes gallery-enter {
+      from { opacity: 0; transform: translateY(22px) scale(.985); filter: blur(5px); }
+      to { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
 
     /* Scroll reveal */
-    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s cubic-bezier(.22,.61,.36,1), transform .7s cubic-bezier(.22,.61,.36,1); }
+    .reveal { opacity: 0; transform: translateY(20px); transition: opacity .8s cubic-bezier(.22,.61,.36,1), transform .8s cubic-bezier(.22,.61,.36,1); }
     .reveal.in { opacity: 1; transform: none; }
 
     /* Subtle image zoom on hover */
-    .ph-img { transition: transform .6s cubic-bezier(.22,.61,.36,1), filter .4s ease; }
-    .ph-card:hover .ph-img { transform: scale(1.04); }
+    .ph-img {
+      transform: translate3d(var(--photo-x), var(--photo-y), 0) scale(1.015);
+      transition: transform .65s cubic-bezier(.22,.61,.36,1), filter .4s ease;
+      will-change: transform;
+    }
+    .ph-card:hover .ph-img { transform: translate3d(var(--photo-x), var(--photo-y), 0) scale(1.06); }
+
+    .animated-cta { position: relative; transition: transform .3s ease, box-shadow .3s ease, background-color .3s ease, color .3s ease; }
+    .animated-cta:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -18px rgba(39,35,31,.65); }
+    .animated-cta svg { transition: transform .3s cubic-bezier(.22,.61,.36,1); }
+    .animated-cta:hover svg { transform: translateX(4px); }
+
+    .filter-btn { transition: transform .25s ease, color .25s ease, background-color .25s ease, border-color .25s ease; }
+    .filter-btn:hover { transform: translateY(-1px); }
+    .filter-btn.is-active { animation: filter-pop .38s cubic-bezier(.2,.8,.25,1); }
+    @keyframes filter-pop { 50% { transform: scale(1.055); } }
 
     /* Auto-hiding header: уезжает при скролле вниз, возвращается вверх/по курсору */
     #nav { transition: transform .4s cubic-bezier(.22,.61,.36,1), background-color .3s ease, box-shadow .3s ease; }
@@ -26,6 +178,11 @@
 
     /* Lightbox */
     #lightbox { transition: opacity .35s ease; }
+    #lbImg.lb-swap { animation: lightbox-swap .42s cubic-bezier(.22,.61,.36,1) both; }
+    @keyframes lightbox-swap {
+      from { opacity: 0; transform: scale(.975); filter: blur(4px); }
+      to { opacity: 1; transform: scale(1); filter: blur(0); }
+    }
 
     /* Letter accents */
     .eyebrow { letter-spacing: .28em; }
@@ -65,6 +222,11 @@
       .stg { opacity: 1 !important; transform: none !important; transition: none !important; }
       .spot::before { display: none; }
       .ph-img { transition: none !important; }
+      .hero-scroll span:last-child, .gallery-enter, .filter-btn.is-active, #lbImg.lb-swap { animation: none !important; }
+      .hero-photo, .ph-img { transform: none !important; }
+      .ph-card:hover { translate: none !important; }
+      .ph-card, .animated-cta, .filter-btn { transition: none !important; }
+      #rigCanvas { transition: none !important; }
       #nav { transition: none !important; }
       html { scroll-behavior: auto; }
     }

@@ -2,27 +2,33 @@
     'use strict';
 
     /* ---------- Gallery data ---------- */
-    let CATS = { portrait: 'Портрет', couple: 'Пары', wedding: 'Свадьба', family: 'Семья' };
+    let CATS = { portrait: 'Портрет', couple: 'Пары', wedding: 'Свадьба', family: 'Семья', featured: 'Избранное' };
     const items = [
       { url: 'assets/portfolio/04.jpg', cat: 'family', r: '3/2', title: 'Мирослава с семьёй' },
       { url: 'assets/portfolio/01.jpg', cat: 'portrait', r: '3/2', title: 'Анна в одуванчиках' },
+      { url: 'assets/portfolio/66.webp', cat: 'featured', r: '2/3', title: 'Анна в вечернем свете' },
       { url: 'assets/portfolio/32.webp', cat: 'couple', r: '2/3', title: 'Алекс и Алеся — вместе' },
       { url: 'assets/portfolio/18.webp', cat: 'portrait', r: '2/3', title: 'Алиса — портрет' },
+      { url: 'assets/portfolio/71.webp', cat: 'featured', r: '2/3', title: 'Прикосновение' },
       { url: 'assets/portfolio/38.webp', cat: 'wedding', r: '2/3', title: 'Николай и Анастасия — поцелуй' },
       { url: 'assets/portfolio/05.jpg', cat: 'portrait', r: '3/2', title: 'Алиса на закате' },
+      { url: 'assets/portfolio/68.webp', cat: 'featured', r: '2/3', title: 'Эвелина у мельницы' },
       { url: 'assets/portfolio/43.webp', cat: 'family', r: '2/3', title: 'Семья Мирославы' },
       { url: 'assets/portfolio/19.webp', cat: 'portrait', r: '2/3', title: 'Анна — солнечный вечер' },
+      { url: 'assets/portfolio/73.webp', cat: 'featured', r: '2/3', title: 'Маленький фотограф' },
       { url: 'assets/portfolio/35.webp', cat: 'couple', r: '2/3', title: 'Кристиян и Лиза — близко' },
       { url: 'assets/portfolio/09.jpg', cat: 'portrait', r: '3/2', title: 'Эвелина' },
       { url: 'assets/portfolio/41.webp', cat: 'wedding', r: '2/3', title: 'Сергей и Мария — прогулка' },
       { url: 'assets/portfolio/20.webp', cat: 'portrait', r: '2/3', title: 'Анна в воде' },
       { url: 'assets/portfolio/46.webp', cat: 'family', r: '2/3', title: 'Анна и Дамир — прогулка' },
       { url: 'assets/portfolio/11.jpg', cat: 'portrait', r: '2/3', title: 'Анна у моря' },
+      { url: 'assets/portfolio/67.webp', cat: 'featured', r: '2/3', title: 'Алиса в сумерках' },
       { url: 'assets/portfolio/17.webp', cat: 'couple', r: '2/3', title: 'Алекс и Алеся — взгляд' },
       { url: 'assets/portfolio/22.webp', cat: 'portrait', r: '2/3', title: 'Эвелина у мельницы' },
       { url: 'assets/portfolio/03.jpg', cat: 'wedding', r: '2/3', title: 'Начало свадебного дня' },
       { url: 'assets/portfolio/12.jpg', cat: 'portrait', r: '2/3', title: 'Стефания' },
       { url: 'assets/portfolio/50.webp', cat: 'family', r: '3/2', title: 'Папа с малышом' },
+      { url: 'assets/portfolio/72.webp', cat: 'featured', r: '2/3', title: 'Перед праздником' },
       { url: 'assets/portfolio/28.webp', cat: 'portrait', r: '2/3', title: 'В ожидании' },
       { url: 'assets/portfolio/02.jpg', cat: 'couple', r: '3/2', title: 'Кристиян и Лиза' },
       { url: 'assets/portfolio/14.jpg', cat: 'portrait', r: '2/3', title: 'Материнство' },
@@ -52,6 +58,7 @@
       { url: 'assets/portfolio/25.webp', cat: 'family', r: '2/3', title: 'Поцелуй для малышки' },
       { url: 'assets/portfolio/29.webp', cat: 'family', r: '2/3', title: 'Таня с малышом' },
       { url: 'assets/portfolio/30.webp', cat: 'family', r: '2/3', title: 'Новорождённый дома' },
+      { url: 'assets/portfolio/70.webp', cat: 'featured', r: '2/3', title: 'Тихое ожидание' },
       { url: 'assets/portfolio/31.webp', cat: 'family', r: '2/3', title: 'Семья у моря' },
       { url: 'assets/portfolio/45.webp', cat: 'family', r: '2/3', title: 'Мирослава с мамой' },
       { url: 'assets/portfolio/47.webp', cat: 'family', r: '2/3', title: 'Анна и Дамир — игра' },
@@ -68,12 +75,15 @@
       { url: 'assets/portfolio/61.webp', cat: 'family', r: '2/3', title: 'Мама с новорождённым' },
       { url: 'assets/portfolio/63.webp', cat: 'family', r: '2/3', title: 'Семья Захаровых — вместе' },
       { url: 'assets/portfolio/64.webp', cat: 'family', r: '3/2', title: 'Прогулка у моря' },
+      { url: 'assets/portfolio/69.webp', cat: 'featured', r: '2/3', title: 'У кромки воды' },
       { url: 'assets/portfolio/65.webp', cat: 'family', r: '2/3', title: 'Семейный вечер' },
     ];
 
     const gallery = document.getElementById('gallery');
+    const loadMore = document.getElementById('loadMore');
+    const ALL_PAGE_SIZE = 12;
     const sizeOf = r => (r === '1/1' ? [700, 700] : r === '4/5' ? [700, 875] : [700, 933]);
-    const srcOf = (it, w, h) => it.url ? it.url : `https://images.unsplash.com/photo-${it.img}?q=80&w=${w}&h=${h}&auto=format&fit=crop`;
+    const srcOf = it => it.url;
 
     /* admin-added photos live in localStorage and merge into the gallery */
     const ADMIN_PHOTOS_KEY = 'val_admin_photos';
@@ -87,15 +97,18 @@
     function saveAdminPhotos(list) { localStorage.setItem(ADMIN_PHOTOS_KEY, JSON.stringify(list)); }
     let allItems = items.concat(loadAdminPhotos());
     let activeFilter = 'all';
+    let visibleAllCount = ALL_PAGE_SIZE;
     function rebuild() { allItems = items.concat(loadAdminPhotos()); applyFilter(); }
     function applyFilter() {
-      current = activeFilter === 'all' ? allItems.slice() : allItems.filter(it => it.cat === activeFilter);
+      const filtered = activeFilter === 'all' ? allItems : allItems.filter(it => it.cat === activeFilter);
+      current = activeFilter === 'all' ? filtered.slice(0, visibleAllCount) : filtered.slice();
       render(current);
+      loadMore.classList.toggle('hidden', activeFilter !== 'all' || visibleAllCount >= filtered.length);
     }
 
     function render(list) {
       gallery.innerHTML = list.map((it, i) => `
-        <figure class="ph-card group relative overflow-hidden rounded-sm bg-sand cursor-pointer reveal in" data-index="${i}" tabindex="0" role="button" aria-label="Открыть фото: ${it.title}">
+        <figure class="ph-card gallery-enter group relative overflow-hidden rounded-sm bg-sand cursor-pointer" style="--card-delay:${Math.min(i, 9) * 45}ms" data-index="${i}" tabindex="0" role="button" aria-label="Открыть фото: ${it.title}">
           <img src="${srcOf(it, ...sizeOf(it.r))}" alt="${it.title} — ${CATS[it.cat]}" loading="${i < 3 ? 'eager' : 'lazy'}" fetchpriority="${i < 3 ? 'high' : 'low'}" decoding="async" class="ph-img w-full object-cover" style="aspect-ratio:${it.r}" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           <figcaption class="absolute bottom-0 inset-x-0 p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
@@ -109,8 +122,8 @@
     }
 
     /* current visible list (for lightbox navigation) */
-    let current = allItems.slice();
-    render(current);
+    let current = [];
+    applyFilter();
 
     /* ---------- Filters ---------- */
     const filters = document.getElementById('filters');
@@ -124,6 +137,12 @@
       btn.classList.add('is-active', 'bg-ink', 'text-white', 'border-ink');
       btn.classList.remove('bg-surface', 'text-soft', 'border-line');
       activeFilter = btn.dataset.filter;
+      visibleAllCount = ALL_PAGE_SIZE;
+      applyFilter();
+    });
+
+    loadMore.addEventListener('click', () => {
+      visibleAllCount += ALL_PAGE_SIZE;
       applyFilter();
     });
 
@@ -133,7 +152,7 @@
     const lbCap = document.getElementById('lbCaption');
     let idx = 0, lastFocus = null;
 
-    function bigSrc(it) { return it.url ? it.url : `https://images.unsplash.com/photo-${it.img}?q=80&w=1600&auto=format`; }
+    function bigSrc(it) { return it.url; }
 
     function show(i) {
       idx = (i + current.length) % current.length;
@@ -141,6 +160,9 @@
       lbImg.src = bigSrc(it);
       lbImg.alt = it.title;
       lbCap.textContent = `${CATS[it.cat]} · ${it.title}`;
+      lbImg.classList.remove('lb-swap');
+      void lbImg.offsetWidth;
+      lbImg.classList.add('lb-swap');
     }
     function open(i) {
       lastFocus = document.activeElement;
@@ -184,6 +206,23 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduceMotion) {
+      gallery.addEventListener('pointermove', e => {
+        const card = e.target.closest('.ph-card');
+        if (!card) return;
+        const r = card.getBoundingClientRect();
+        card.style.setProperty('--photo-x', `${((e.clientX - r.left) / r.width - .5) * -8}px`);
+        card.style.setProperty('--photo-y', `${((e.clientY - r.top) / r.height - .5) * -8}px`);
+      }, { passive: true });
+      gallery.addEventListener('pointerout', e => {
+        const card = e.target.closest('.ph-card');
+        if (!card || card.contains(e.relatedTarget)) return;
+        card.style.setProperty('--photo-x', '0px');
+        card.style.setProperty('--photo-y', '0px');
+      });
+    }
+
     document.querySelectorAll('.spot').forEach(card => {
       card.addEventListener('pointermove', e => {
         const r = card.getBoundingClientRect();
@@ -198,6 +237,7 @@
 
     /* ---------- Nav: bg on scroll + auto-hide ---------- */
     const nav = document.getElementById('nav');
+    const scrollProgress = document.getElementById('scrollProgress');
     const navMenu = document.getElementById('mobileMenu');
     const NAV_BG = ['bg-bg/90', 'backdrop-blur-md', 'border-b', 'border-line', 'shadow-[0_1px_0_rgba(0,0,0,0.02)]'];
     const NAV_HIDE_AFTER = 140;   /* не прячем, пока не отскроллили заметно */
@@ -210,6 +250,8 @@
 
     const onScroll = () => {
       const y = window.scrollY;
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      scrollProgress.style.transform = `scaleX(${scrollable > 0 ? Math.min(y / scrollable, 1) : 0})`;
 
       if (y > 40) nav.classList.add(...NAV_BG);
       else nav.classList.remove(...NAV_BG);
@@ -244,75 +286,53 @@
       menu.classList.add('hidden'); burger.setAttribute('aria-expanded', 'false');
     }));
 
-    /* ---------- Booking form ---------- */
-    const form = document.getElementById('bookingForm');
-    const status = document.getElementById('formStatus');
-    form.addEventListener('submit', e => {
-      e.preventDefault();
-      if (!form.name.value.trim()) { form.name.focus(); return; }
-      status.classList.remove('hidden');
-      form.reset();
-      setTimeout(() => status.classList.add('hidden'), 6000);
-    });
-
     /* ============================================================
        INTERNATIONALISATION (RU default · ET · EN)
     ============================================================ */
     const I18N = {
       ru: {
-        __doc: 'Валентина Орлова — Фотограф',
-        __cats: { portrait: 'Портрет', couple: 'Пары', wedding: 'Свадьба', family: 'Семья' },
-        nav_portfolio: 'Портфолио', nav_about: 'Обо мне', nav_prices: 'Цены', nav_reviews: 'Отзывы',
-        nav_book: 'Записаться', nav_book_full: 'Записаться на съёмку', menu_open: 'Открыть меню',
-        hero_eyebrow: 'Фотограф · Таллинн & путешествия',
-        hero_title: 'Свет, тишина<br class="hidden sm:block" /> и <em class="italic font-normal">честные эмоции</em>',
-        hero_sub: 'Снимаю спокойно и по-настоящему — портреты, свадьбы и семейные истории, к которым хочется возвращаться.',
-        hero_cta: 'Записаться на съёмку', hero_cta2: 'Смотреть работы', hero_scroll: 'Листайте',
+        __doc: 'Valentina Šestero — фотограф',
+        __cats: { portrait: 'Портрет', couple: 'Пары', wedding: 'Свадьба', family: 'Семья', featured: 'Избранное' },
+        nav_portfolio: 'Портфолио', nav_about: 'Обо мне', nav_prices: 'Цены',
+        nav_book: 'Связаться', nav_book_full: 'Связаться', menu_open: 'Открыть меню',
+        hero_eyebrow: 'Фотограф · Эстония',
+        hero_title: 'Живые истории<br />в <em class="italic font-normal">тихом свете</em>',
+        hero_sub: 'Бережно снимаю портреты, пары, свадьбы и семьи — без напряжения, спешки и неестественных поз.',
+        hero_cta: 'Написать в Instagram', hero_cta2: 'Смотреть работы', hero_scroll: 'Листайте',
         trust_years: 'лет в фотографии', trust_shoots: 'съёмок', trust_memories: 'тёплых воспоминаний',
         portfolio_eyebrow: 'Портфолио', portfolio_title: 'Избранные работы',
-        portfolio_sub: 'Каждая съёмка — отдельная история. Выберите категорию, чтобы посмотреть ближе.',
-        filter_all: 'Все', filter_portrait: 'Портреты', filter_couple: 'Пары', filter_wedding: 'Свадьбы', filter_family: 'Семейные',
+        portfolio_sub: 'Настоящие люди, близость и детали, которые хочется сохранить. Выберите историю, чтобы посмотреть фотографии.',
+        filter_all: 'Все', filter_portrait: 'Портреты', filter_couple: 'Пары', filter_wedding: 'Свадьбы', filter_family: 'Семейные', gallery_more: 'Показать больше',
         rig_eyebrow1: 'Чем я снимаю', rig_title1: 'Каждый кадр<br />начинается здесь',
-        rig_sub1: 'Прокрутите вниз — соберём её по детали',
-        rig_sub3: 'Мой основной инструмент для портрета и репортажа', rig_cta: 'Смотреть кадры с неё',
-        about_eyebrow: 'Обо мне', about_title: 'Снимаю так,<br />как чувствую момент',
-        about_p1: 'Меня зовут Валентина. Уже семь лет я помогаю людям сохранять самые честные, живые моменты — без скованных поз и фальшивых улыбок.',
-        about_p2: 'Мне важно, чтобы на съёмке вам было легко. Мы просто общаемся, гуляем, смеёмся — а кадры рождаются сами. В результате вы получаете фотографии, на которых узнаёте себя настоящего.',
-        about_f1: 'Естественный свет', about_f2: 'Деликатная ретушь', about_f3: 'Помогаю позировать', about_f4: 'Готовлю за 7–14 дней',
-        about_cta: 'Обсудить вашу съёмку', about_badge_hi: 'Привет', about_badge_txt: 'Я Валентина — и я очень люблю свою работу.',
-        prices_eyebrow: 'Услуги и цены', prices_title: 'Прозрачные пакеты',
-        prices_sub: 'Никаких скрытых доплат. Выбирайте формат — остальное обсудим лично.',
-        p1_name: 'Индивидуальная', p1_tag: 'Портрет · Love-story · Контент', p1_price: 'от 150 €',
-        p1_f1: '1 час съёмки', p1_f2: '1 локация, помощь со стилем', p1_f3: '15 фото в ретуши', p1_f4: 'Все исходники в галерее',
-        p1_ready: 'Готово за 7 дней', p1_deposit: 'Депозит 30%', choose: 'Выбрать',
-        p2_badge: 'Хит', p2_name: 'Свадебная', p2_tag: 'Полный день вашей истории', p2_price: 'от 750 €',
+        rig_sub1: 'Прокрутите вниз — камера соберётся по деталям',
+        rig_sub3: 'Мой основной инструмент для портретов и репортажа', rig_cta: 'Смотреть фотографии',
+        about_eyebrow: 'Обо мне', about_title: 'Сохраняю то,<br />что чувствуете вы', about_photo_placeholder: 'Здесь будет портрет Валентины',
+        about_p1: 'Меня зовут Валентина. Я снимаю людей и их близкие истории — бережно, спокойно и без лишней постановки.',
+        about_p2: 'На съёмке не нужно уметь позировать. Мы знакомимся, разговариваем и двигаемся в удобном для вас темпе. Я мягко подсказываю, а вы можете просто быть собой.',
+        about_f1: 'Естественный свет', about_f2: 'Деликатная ретушь', about_f3: 'Мягко направляю в кадре', about_f4: 'Срок отдачи 7–14 дней',
+        about_cta: 'Связаться со мной', about_badge_hi: 'Привет', about_badge_txt: 'Я Валентина — и я люблю живые фотографии.',
+        prices_eyebrow: 'Услуги и цены', prices_title: 'Форматы съёмки',
+        prices_sub: 'В каждом формате есть подготовка, помощь на съёмке и удобная онлайн-галерея.',
+        p1_name: 'Индивидуальная', p1_tag: 'Портреты · Пары', p1_price: 'от 150 €',
+        p1_f1: '1 час съёмки', p1_f2: '1 локация и помощь с образом', p1_f3: '15 фотографий в ретуши', p1_f4: 'Готовые фотографии в онлайн-галерее',
+        p1_ready: 'Готово за 7 дней', p1_deposit: 'Депозит 30%', choose: 'Обсудить',
+        p2_badge: 'Популярно', p2_name: 'Свадебная', p2_tag: 'Свадебная история', p2_price: 'от 750 €',
         p2_f1: 'До 8 часов съёмки', p2_f2: 'Сборы, церемония, банкет', p2_f3: '250+ фото, 60 в ретуши', p2_f4: 'Помощь с таймингом дня',
-        p2_ready: 'Готово за 21 день', p2_deposit: 'Депозит 50%', p2_cta: 'Забронировать дату',
-        p3_name: 'Семейная', p3_tag: 'Дети · Family · Newborn', p3_price: 'от 200 €',
-        p3_f1: '1,5 часа в комфортном темпе', p3_f2: 'Дом, студия или природа', p3_f3: '25 фото в ретуши', p3_f4: 'Бережно к детям и темпу',
+        p2_ready: 'Готово за 21 день', p2_deposit: 'Депозит 50%', p2_cta: 'Узнать свободную дату',
+        p3_name: 'Семейная', p3_tag: 'Семья · Дети · Новорождённые', p3_price: 'от 200 €',
+        p3_f1: '1,5 часа в комфортном темпе', p3_f2: 'Дома, в студии или на природе', p3_f3: '25 фотографий в ретуши', p3_f4: 'Бережный подход к детям',
         p3_ready: 'Готово за 10 дней', p3_deposit: 'Депозит 30%',
         prices_note: 'Выезд за город и другие города — обсуждается индивидуально. Депозит закрепляет дату и входит в стоимость.',
-        reviews_eyebrow: 'Отзывы', reviews_title: 'Слова клиентов',
-        review1_text: '«Боялась камеры всю жизнь, а с Валей забыла, что меня снимают. Фотографии — будто кто-то подсмотрел самые тёплые минуты».',
-        review1_role: 'Индивидуальная съёмка',
-        review2_text: '«Наша свадьба в кадрах — это кино. Валентина была незаметна весь день, а потом мы плакали от того, сколько всего она успела поймать».',
-        review2_role: 'Свадебная съёмка',
-        review3_text: '«С двумя малышами это казалось невозможным. Но получились живые, нежные кадры, где все настоящие — и смех, и слёзы».',
-        review3_role: 'Семейная съёмка',
-        contact_eyebrow: 'Контакты', contact_title: 'Давайте создадим<br />вашу историю',
-        contact_sub: 'Расскажите о задумке — формат, дата, настроение. Отвечаю в течение дня и помогаю всё спланировать.',
-        contact_mail_label: 'Почта', contact_phone_label: 'Телефон / WhatsApp',
-        form_title: 'Записаться на съёмку', form_name_label: 'Ваше имя', form_name_ph: 'Как к вам обращаться',
-        form_phone_label: 'Телефон', form_format_label: 'Формат',
-        form_opt1: 'Индивидуальная', form_opt2: 'Свадебная', form_opt3: 'Семейная / Дети', form_opt4: 'Контент для бизнеса',
-        form_msg_label: 'Расскажите о съёмке', form_msg_ph: 'Желаемая дата, идея, настроение...',
-        form_submit: 'Отправить заявку', form_success: 'Спасибо! Я свяжусь с вами в течение дня.',
-        footer_copyright: '© 2026 Валентина Орлова. Все права защищены.',
+        contact_eyebrow: 'Контакты', contact_title: 'Давайте сохраним<br /><em class="font-normal italic">вашу историю</em>',
+        contact_sub: 'Напишите в Instagram или позвоните. Обсудим дату, формат и настроение будущей съёмки.',
+        contact_reply: 'Обычно отвечаю в течение дня.', contact_phone_label: 'Телефон', contact_phone_action: 'Позвонить',
+        contact_instagram_label: 'Instagram', contact_instagram_action: 'Написать',
+        footer_copyright: '© 2026 Valentina Šestero. Все права защищены.',
         footer_privacy: 'Политика конфиденциальности', footer_cookies: 'Cookie-файлы',
         cookie_text: 'Мы используем cookie-файлы, чтобы сайт работал корректно и удобно. Продолжая, вы соглашаетесь с нашей политикой конфиденциальности.',
         cookie_more: 'Подробнее', cookie_decline: 'Отклонить', cookie_accept: 'Принять',
         privacy_title: 'Политика конфиденциальности',
-        privacy_body: '<p>Настоящая политика описывает, как обрабатываются персональные данные на этом сайте.</p><p><strong>Какие данные собираются.</strong> Через форму записи мы получаем ваше имя, телефон и описание съёмки — только для связи с вами и организации съёмки.</p><p><strong>Cookie-файлы.</strong> Мы используем необходимые cookie-файлы для корректной работы сайта и сохранения выбранного языка. Вы можете отклонить необязательные cookie в баннере.</p><p><strong>Хранение и передача.</strong> Данные не передаются третьим лицам и используются только фотографом Валентиной Орловой.</p><p><strong>Ваши права.</strong> Вы можете запросить удаление своих данных, написав на hello@valentina.photo.</p>',
+        privacy_body: '<p>На сайте нет формы заявки, поэтому он не собирает ваше имя, телефон или описание съёмки.</p><p><strong>Cookie-файлы.</strong> Используются только настройки, необходимые для работы сайта и сохранения выбранного языка.</p><p><strong>Внешние сервисы.</strong> При нажатии на телефон или Instagram вы переходите к соответствующему приложению или сервису, где действуют их собственные правила конфиденциальности.</p>',
         admin_login_title: 'Вход в админ-панель', admin_login_sub: 'Введите имя пользователя и пароль',
         admin_user_label: 'Имя пользователя', admin_pass_label: 'Пароль', admin_login_btn: 'Войти',
         admin_error: 'Неверное имя пользователя или пароль', admin_panel_title: 'Управление фотографиями',
@@ -321,59 +341,48 @@
         admin_empty: 'Пока нет добавленных фото', admin_logout: 'Выйти'
       },
       et: {
-        __doc: 'Valentina Orlova — Fotograaf',
-        __cats: { portrait: 'Portree', couple: 'Paar', wedding: 'Pulm', family: 'Pere' },
-        nav_portfolio: 'Portfoolio', nav_about: 'Minust', nav_prices: 'Hinnad', nav_reviews: 'Arvustused',
-        nav_book: 'Broneeri', nav_book_full: 'Broneeri pildistamine', menu_open: 'Ava menüü',
-        hero_eyebrow: 'Fotograaf · Tallinn & reisid',
-        hero_title: 'Valgus, vaikus<br class="hidden sm:block" /> ja <em class="italic font-normal">ausad emotsioonid</em>',
-        hero_sub: 'Pildistan rahulikult ja ehedalt — portreed, pulmad ja perelood, mille juurde tahaks naasta.',
-        hero_cta: 'Broneeri pildistamine', hero_cta2: 'Vaata töid', hero_scroll: 'Keri',
+        __doc: 'Valentina Šestero — fotograaf',
+        __cats: { portrait: 'Portree', couple: 'Paar', wedding: 'Pulm', family: 'Pere', featured: 'Valik' },
+        nav_portfolio: 'Portfoolio', nav_about: 'Minust', nav_prices: 'Hinnad',
+        nav_book: 'Võta ühendust', nav_book_full: 'Võta ühendust', menu_open: 'Ava menüü',
+        hero_eyebrow: 'Fotograaf · Eesti',
+        hero_title: 'Elavad lood<br /><em class="italic font-normal">vaikses valguses</em>',
+        hero_sub: 'Jäädvustan portreesid, paare, pulmi ja peresid rahulikult ning loomulikult — ilma pinge, kiirustamise ja jäikade poosideta.',
+        hero_cta: 'Kirjuta Instagramis', hero_cta2: 'Vaata töid', hero_scroll: 'Keri',
         trust_years: 'aastat fotograafias', trust_shoots: 'pildistamist', trust_memories: 'sooja mälestust',
         portfolio_eyebrow: 'Portfoolio', portfolio_title: 'Valitud tööd',
-        portfolio_sub: 'Iga pildistamine on omaette lugu. Vali kategooria, et vaadata lähemalt.',
-        filter_all: 'Kõik', filter_portrait: 'Portreed', filter_couple: 'Paarid', filter_wedding: 'Pulmad', filter_family: 'Pered',
+        portfolio_sub: 'Päris inimesed, lähedus ja detailid, mida tahaks hoida. Vali lugu ja vaata fotosid.',
+        filter_all: 'Kõik', filter_portrait: 'Portreed', filter_couple: 'Paarid', filter_wedding: 'Pulmad', filter_family: 'Pered', gallery_more: 'Näita rohkem',
         rig_eyebrow1: 'Millega ma pildistan', rig_title1: 'Iga kaader<br />algab siit',
-        rig_sub1: 'Keri alla — paneme selle detailhaaval kokku',
-        rig_sub3: 'Minu põhitööriist portree ja reportaaži jaoks', rig_cta: 'Vaata sellega tehtud kaadreid',
-        about_eyebrow: 'Minust', about_title: 'Pildistan nii,<br />nagu tunnen hetke',
-        about_p1: 'Minu nimi on Valentina. Juba seitse aastat aitan inimestel jäädvustada kõige ausamaid, elavaid hetki — ilma kohmakate poosside ja võltsnaeratusteta.',
-        about_p2: 'Minu jaoks on oluline, et pildistamisel oleks teil kerge olla. Me lihtsalt vestleme, jalutame, naerame — ja kaadrid sünnivad iseenesest. Tulemuseks saate fotod, millelt tunnete ära tõelise iseenda.',
-        about_f1: 'Loomulik valgus', about_f2: 'Õrn retušš', about_f3: 'Aitan poseerida', about_f4: 'Valmis 7–14 päevaga',
-        about_cta: 'Aruta oma pildistamist', about_badge_hi: 'Tere', about_badge_txt: 'Olen Valentina — ja ma armastan oma tööd.',
-        prices_eyebrow: 'Teenused ja hinnad', prices_title: 'Läbipaistvad paketid',
-        prices_sub: 'Mingeid varjatud lisatasusid. Vali formaat — ülejäänu arutame isiklikult.',
-        p1_name: 'Individuaalne', p1_tag: 'Portree · Love-story · Sisu', p1_price: 'alates 150 €',
-        p1_f1: '1 tund pildistamist', p1_f2: '1 asukoht, abi stiiliga', p1_f3: '15 retušitud fotot', p1_f4: 'Kõik originaalid galeriis',
-        p1_ready: 'Valmis 7 päevaga', p1_deposit: 'Ettemaks 30%', choose: 'Vali',
-        p2_badge: 'Hitt', p2_name: 'Pulmapakett', p2_tag: 'Teie loo terve päev', p2_price: 'alates 750 €',
+        rig_sub1: 'Keri alla — kaamera koguneb detailhaaval',
+        rig_sub3: 'Minu põhitööriist portreede ja reportaaži jaoks', rig_cta: 'Vaata fotosid',
+        about_eyebrow: 'Minust', about_title: 'Jäädvustan selle,<br />mida teie tunnete', about_photo_placeholder: 'Siia tuleb Valentina portree',
+        about_p1: 'Minu nimi on Valentina. Pildistan inimesi ja nende lähedasi lugusid rahulikult, tähelepanelikult ning ilma liigse lavastamiseta.',
+        about_p2: 'Pildistamiseks ei pea oskama poseerida. Tutvume, räägime ja liigume teile sobivas tempos. Annan rahulikult juhiseid, et saaksite jääda iseendaks.',
+        about_f1: 'Loomulik valgus', about_f2: 'Õrn retušš', about_f3: 'Rahulik juhendamine', about_f4: 'Fotod 7–14 päevaga',
+        about_cta: 'Võta minuga ühendust', about_badge_hi: 'Tere', about_badge_txt: 'Olen Valentina ja armastan elavaid fotosid.',
+        prices_eyebrow: 'Teenused ja hinnad', prices_title: 'Pildistamise valikud',
+        prices_sub: 'Iga pakett sisaldab ettevalmistust, juhendamist pildistamisel ja mugavat veebigaleriid.',
+        p1_name: 'Individuaalne', p1_tag: 'Portreed · Paarid', p1_price: 'alates 150 €',
+        p1_f1: '1 tund pildistamist', p1_f2: '1 asukoht ja abi riietuse valikul', p1_f3: '15 töödeldud fotot', p1_f4: 'Valmis fotod veebigaleriis',
+        p1_ready: 'Valmis 7 päevaga', p1_deposit: 'Ettemaks 30%', choose: 'Arutame',
+        p2_badge: 'Populaarne', p2_name: 'Pulmapakett', p2_tag: 'Teie pulmapäeva lugu', p2_price: 'alates 750 €',
         p2_f1: 'Kuni 8 tundi pildistamist', p2_f2: 'Ettevalmistus, tseremoonia, pidu', p2_f3: '250+ fotot, 60 retušitud', p2_f4: 'Abi päeva ajakavaga',
-        p2_ready: 'Valmis 21 päevaga', p2_deposit: 'Ettemaks 50%', p2_cta: 'Broneeri kuupäev',
-        p3_name: 'Perepakett', p3_tag: 'Lapsed · Family · Newborn', p3_price: 'alates 200 €',
-        p3_f1: '1,5 tundi mugavas tempos', p3_f2: 'Kodu, stuudio või loodus', p3_f3: '25 retušitud fotot', p3_f4: 'Hoolivalt laste ja tempoga',
+        p2_ready: 'Valmis 21 päevaga', p2_deposit: 'Ettemaks 50%', p2_cta: 'Küsi vaba kuupäeva',
+        p3_name: 'Perepakett', p3_tag: 'Pere · Lapsed · Vastsündinud', p3_price: 'alates 200 €',
+        p3_f1: '1,5 tundi rahulikus tempos', p3_f2: 'Kodus, stuudios või looduses', p3_f3: '25 töödeldud fotot', p3_f4: 'Laste suhtes tähelepanelik lähenemine',
         p3_ready: 'Valmis 10 päevaga', p3_deposit: 'Ettemaks 30%',
         prices_note: 'Väljasõit maapiirkonda ja teistesse linnadesse — kokkuleppel. Ettemaks kinnitab kuupäeva ja sisaldub hinnas.',
-        reviews_eyebrow: 'Arvustused', reviews_title: 'Klientide sõnad',
-        review1_text: '«Kartsin kaamerat kogu elu, aga Valentinaga unustasin, et mind pildistatakse. Fotod on justkui keegi oleks salaja tabanud kõige soojemad hetked.»',
-        review1_role: 'Individuaalne pildistamine',
-        review2_text: '«Meie pulmad kaadrites on nagu film. Valentina oli terve päeva märkamatu ja siis me nutsime, kui palju ta oli jõudnud tabada.»',
-        review2_role: 'Pulmafotograafia',
-        review3_text: '«Kahe väikelapsega tundus see võimatu. Aga tulid elavad, õrnad kaadrid, kus kõik on ehtsad — nii naer kui pisarad.»',
-        review3_role: 'Perepildistamine',
-        contact_eyebrow: 'Kontakt', contact_title: 'Loome koos<br />teie loo',
-        contact_sub: 'Rääkige oma ideest — formaat, kuupäev, meeleolu. Vastan päeva jooksul ja aitan kõik planeerida.',
-        contact_mail_label: 'E-post', contact_phone_label: 'Telefon / WhatsApp',
-        form_title: 'Broneeri pildistamine', form_name_label: 'Teie nimi', form_name_ph: 'Kuidas teid kutsuda',
-        form_phone_label: 'Telefon', form_format_label: 'Formaat',
-        form_opt1: 'Individuaalne', form_opt2: 'Pulmapakett', form_opt3: 'Pere / Lapsed', form_opt4: 'Sisu ettevõttele',
-        form_msg_label: 'Rääkige pildistamisest', form_msg_ph: 'Soovitud kuupäev, idee, meeleolu...',
-        form_submit: 'Saada päring', form_success: 'Aitäh! Võtan teiega päeva jooksul ühendust.',
-        footer_copyright: '© 2026 Valentina Orlova. Kõik õigused kaitstud.',
+        contact_eyebrow: 'Kontakt', contact_title: 'Hoiame alles<br /><em class="font-normal italic">teie loo</em>',
+        contact_sub: 'Kirjutage Instagramis või helistage. Räägime kuupäevast, formaadist ja soovitud meeleolust.',
+        contact_reply: 'Vastan tavaliselt ühe päeva jooksul.', contact_phone_label: 'Telefon', contact_phone_action: 'Helista',
+        contact_instagram_label: 'Instagram', contact_instagram_action: 'Kirjuta',
+        footer_copyright: '© 2026 Valentina Šestero. Kõik õigused kaitstud.',
         footer_privacy: 'Privaatsuspoliitika', footer_cookies: 'Küpsised',
         cookie_text: 'Kasutame küpsiseid, et sait töötaks korrektselt ja mugavalt. Jätkates nõustute meie privaatsuspoliitikaga.',
         cookie_more: 'Loe lähemalt', cookie_decline: 'Keeldun', cookie_accept: 'Nõustun',
         privacy_title: 'Privaatsuspoliitika',
-        privacy_body: '<p>Käesolev poliitika kirjeldab, kuidas sellel saidil isikuandmeid töödeldakse.</p><p><strong>Milliseid andmeid kogutakse.</strong> Broneerimisvormi kaudu saame teie nime, telefoni ja pildistamise kirjelduse — ainult teiega ühenduse võtmiseks ja pildistamise korraldamiseks.</p><p><strong>Küpsised.</strong> Kasutame vajalikke küpsiseid saidi korrektseks tööks ja valitud keele salvestamiseks. Mittevajalikest küpsistest saate bänneris keelduda.</p><p><strong>Säilitamine ja edastamine.</strong> Andmeid ei edastata kolmandatele isikutele ja neid kasutab ainult fotograaf Valentina Orlova.</p><p><strong>Teie õigused.</strong> Võite taotleda oma andmete kustutamist, kirjutades aadressil hello@valentina.photo.</p>',
+        privacy_body: '<p>Veebisaidil ei ole päringuvormi, seega ei koguta siin teie nime, telefoninumbrit ega pildistamise kirjeldust.</p><p><strong>Küpsised.</strong> Kasutatakse ainult saidi tööks ja valitud keele meeldejätmiseks vajalikke seadeid.</p><p><strong>Välised teenused.</strong> Telefoni või Instagrami lingile vajutades avaneb vastav rakendus või teenus, millele kehtivad selle enda privaatsustingimused.</p>',
         admin_login_title: 'Sisselogimine', admin_login_sub: 'Sisestage kasutajanimi ja parool',
         admin_user_label: 'Kasutajanimi', admin_pass_label: 'Parool', admin_login_btn: 'Logi sisse',
         admin_error: 'Vale kasutajanimi või parool', admin_panel_title: 'Fotode haldus',
@@ -382,59 +391,48 @@
         admin_empty: 'Lisatud fotosid veel pole', admin_logout: 'Logi välja'
       },
       en: {
-        __doc: 'Valentina Orlova — Photographer',
-        __cats: { portrait: 'Portrait', couple: 'Couple', wedding: 'Wedding', family: 'Family' },
-        nav_portfolio: 'Portfolio', nav_about: 'About', nav_prices: 'Pricing', nav_reviews: 'Reviews',
-        nav_book: 'Book', nav_book_full: 'Book a session', menu_open: 'Open menu',
-        hero_eyebrow: 'Photographer · Tallinn & travel',
-        hero_title: 'Light, stillness<br class="hidden sm:block" /> and <em class="italic font-normal">honest emotion</em>',
-        hero_sub: 'I shoot calmly and truthfully — portraits, weddings and family stories you\'ll want to return to.',
-        hero_cta: 'Book a session', hero_cta2: 'View work', hero_scroll: 'Scroll',
+        __doc: 'Valentina Šestero — photographer',
+        __cats: { portrait: 'Portrait', couple: 'Couple', wedding: 'Wedding', family: 'Family', featured: 'Featured' },
+        nav_portfolio: 'Portfolio', nav_about: 'About', nav_prices: 'Pricing',
+        nav_book: 'Get in touch', nav_book_full: 'Get in touch', menu_open: 'Open menu',
+        hero_eyebrow: 'Photographer · Estonia',
+        hero_title: 'Real stories<br />in <em class="italic font-normal">gentle light</em>',
+        hero_sub: 'I photograph portraits, couples, weddings and families with a calm, natural approach — no pressure, rushing or stiff poses.',
+        hero_cta: 'Message on Instagram', hero_cta2: 'View portfolio', hero_scroll: 'Scroll',
         trust_years: 'years in photography', trust_shoots: 'sessions', trust_memories: 'warm memories',
         portfolio_eyebrow: 'Portfolio', portfolio_title: 'Selected work',
-        portfolio_sub: 'Every shoot is its own story. Pick a category to take a closer look.',
-        filter_all: 'All', filter_portrait: 'Portraits', filter_couple: 'Couples', filter_wedding: 'Weddings', filter_family: 'Families',
+        portfolio_sub: 'Real people, closeness and details worth keeping. Choose a story and explore the photographs.',
+        filter_all: 'All', filter_portrait: 'Portraits', filter_couple: 'Couples', filter_wedding: 'Weddings', filter_family: 'Families', gallery_more: 'Show more',
         rig_eyebrow1: 'What I shoot with', rig_title1: 'Every frame<br />begins here',
-        rig_sub1: 'Scroll down — we\'ll assemble it piece by piece',
-        rig_sub3: 'My main tool for portraits and reportage', rig_cta: 'See shots from it',
-        about_eyebrow: 'About me', about_title: 'I shoot the way<br />I feel the moment',
-        about_p1: 'My name is Valentina. For seven years I\'ve helped people keep their most honest, living moments — no stiff poses or forced smiles.',
-        about_p2: 'It matters to me that you feel at ease. We simply talk, walk and laugh — and the shots take care of themselves. In the end you get photos where you recognise your real self.',
-        about_f1: 'Natural light', about_f2: 'Gentle retouching', about_f3: 'I guide posing', about_f4: 'Ready in 7–14 days',
-        about_cta: 'Discuss your session', about_badge_hi: 'Hi', about_badge_txt: 'I\'m Valentina — and I love what I do.',
-        prices_eyebrow: 'Services & pricing', prices_title: 'Transparent packages',
-        prices_sub: 'No hidden fees. Pick a format — we\'ll discuss the rest in person.',
-        p1_name: 'Individual', p1_tag: 'Portrait · Love-story · Content', p1_price: 'from €150',
-        p1_f1: '1 hour session', p1_f2: '1 location, styling help', p1_f3: '15 retouched photos', p1_f4: 'All originals in a gallery',
-        p1_ready: 'Ready in 7 days', p1_deposit: 'Deposit 30%', choose: 'Choose',
-        p2_badge: 'Popular', p2_name: 'Wedding', p2_tag: 'A full day of your story', p2_price: 'from €750',
+        rig_sub1: 'Scroll down — the camera comes together piece by piece',
+        rig_sub3: 'My main tool for portraits and documentary work', rig_cta: 'View photographs',
+        about_eyebrow: 'About me', about_title: 'I preserve<br />what you feel', about_photo_placeholder: 'Valentina’s portrait will appear here',
+        about_p1: 'My name is Valentina. I photograph people and the stories they share, with care, calm direction and very little staging.',
+        about_p2: 'You do not need to know how to pose. We get acquainted, talk and move at a pace that feels comfortable. I offer gentle guidance so you can simply be yourself.',
+        about_f1: 'Natural light', about_f2: 'Gentle retouching', about_f3: 'Calm, clear guidance', about_f4: 'Delivered in 7–14 days',
+        about_cta: 'Get in touch', about_badge_hi: 'Hi', about_badge_txt: 'I\'m Valentina, and I love honest photographs.',
+        prices_eyebrow: 'Services & pricing', prices_title: 'Session options',
+        prices_sub: 'Every option includes preparation, guidance during the shoot and a private online gallery.',
+        p1_name: 'Individual', p1_tag: 'Portraits · Couples', p1_price: 'from €150',
+        p1_f1: '1-hour session', p1_f2: '1 location and wardrobe guidance', p1_f3: '15 fully edited photographs', p1_f4: 'Finished photographs in an online gallery',
+        p1_ready: 'Ready in 7 days', p1_deposit: '30% deposit', choose: 'Let\'s talk',
+        p2_badge: 'Most popular', p2_name: 'Wedding', p2_tag: 'Your wedding-day story', p2_price: 'from €750',
         p2_f1: 'Up to 8 hours', p2_f2: 'Prep, ceremony, reception', p2_f3: '250+ photos, 60 retouched', p2_f4: 'Timeline planning help',
-        p2_ready: 'Ready in 21 days', p2_deposit: 'Deposit 50%', p2_cta: 'Book a date',
-        p3_name: 'Family', p3_tag: 'Kids · Family · Newborn', p3_price: 'from €200',
-        p3_f1: '1.5 hours at an easy pace', p3_f2: 'Home, studio or nature', p3_f3: '25 retouched photos', p3_f4: 'Gentle with kids and pace',
+        p2_ready: 'Ready in 21 days', p2_deposit: '50% deposit', p2_cta: 'Check availability',
+        p3_name: 'Family', p3_tag: 'Family · Children · Newborn', p3_price: 'from €200',
+        p3_f1: '1.5 hours at a relaxed pace', p3_f2: 'At home, in a studio or outdoors', p3_f3: '25 fully edited photographs', p3_f4: 'A child-friendly approach',
         p3_ready: 'Ready in 10 days', p3_deposit: 'Deposit 30%',
         prices_note: 'Travel outside the city and to other towns is arranged individually. The deposit secures your date and is included in the price.',
-        reviews_eyebrow: 'Reviews', reviews_title: 'In clients\' words',
-        review1_text: '"I feared cameras my whole life, but with Valentina I forgot I was being photographed. The photos feel like someone quietly caught the warmest moments."',
-        review1_role: 'Individual session',
-        review2_text: '"Our wedding in photos is like a film. Valentina was invisible all day, and then we cried at how much she managed to capture."',
-        review2_role: 'Wedding session',
-        review3_text: '"With two toddlers it seemed impossible. But we got lively, tender photos where everything is real — the laughter and the tears."',
-        review3_role: 'Family session',
-        contact_eyebrow: 'Contact', contact_title: 'Let\'s create<br />your story',
-        contact_sub: 'Tell me your idea — format, date, mood. I reply within a day and help you plan everything.',
-        contact_mail_label: 'Email', contact_phone_label: 'Phone / WhatsApp',
-        form_title: 'Book a session', form_name_label: 'Your name', form_name_ph: 'What should I call you',
-        form_phone_label: 'Phone', form_format_label: 'Format',
-        form_opt1: 'Individual', form_opt2: 'Wedding', form_opt3: 'Family / Kids', form_opt4: 'Content for business',
-        form_msg_label: 'Tell me about the shoot', form_msg_ph: 'Preferred date, idea, mood...',
-        form_submit: 'Send request', form_success: 'Thank you! I\'ll get back to you within a day.',
-        footer_copyright: '© 2026 Valentina Orlova. All rights reserved.',
+        contact_eyebrow: 'Contact', contact_title: 'Let\'s preserve<br /><em class="font-normal italic">your story</em>',
+        contact_sub: 'Message me on Instagram or call. We can discuss the date, format and feeling you have in mind.',
+        contact_reply: 'I usually reply within one day.', contact_phone_label: 'Phone', contact_phone_action: 'Call',
+        contact_instagram_label: 'Instagram', contact_instagram_action: 'Message',
+        footer_copyright: '© 2026 Valentina Šestero. All rights reserved.',
         footer_privacy: 'Privacy policy', footer_cookies: 'Cookies',
         cookie_text: 'We use cookies so the site works properly and comfortably. By continuing you agree to our privacy policy.',
         cookie_more: 'Learn more', cookie_decline: 'Decline', cookie_accept: 'Accept',
         privacy_title: 'Privacy policy',
-        privacy_body: '<p>This policy explains how personal data is processed on this site.</p><p><strong>What data is collected.</strong> Through the booking form we receive your name, phone and a description of the shoot — used only to contact you and arrange the session.</p><p><strong>Cookies.</strong> We use necessary cookies for the site to work correctly and to remember your chosen language. You can decline optional cookies in the banner.</p><p><strong>Storage and sharing.</strong> Data is not shared with third parties and is used only by photographer Valentina Orlova.</p><p><strong>Your rights.</strong> You can request deletion of your data by writing to hello@valentina.photo.</p>',
+        privacy_body: '<p>This website has no enquiry form, so it does not collect your name, phone number or session details.</p><p><strong>Cookies.</strong> Only settings needed for the site to work and remember your selected language are used.</p><p><strong>External services.</strong> Phone and Instagram links open the relevant app or service, where their own privacy terms apply.</p>',
         admin_login_title: 'Admin login', admin_login_sub: 'Enter your username and password',
         admin_user_label: 'Username', admin_pass_label: 'Password', admin_login_btn: 'Log in',
         admin_error: 'Wrong username or password', admin_panel_title: 'Photo manager',

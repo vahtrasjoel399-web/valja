@@ -3,6 +3,7 @@
 
     const section = document.getElementById('rig');
     const canvas  = document.getElementById('rigCanvas');
+    const portrait = document.getElementById('photographerPortrait');
     const bar     = document.getElementById('rigBar');
     const caps    = Array.from(document.querySelectorAll('#rig .rig-cap'));
     if (!section || !canvas) return;
@@ -205,10 +206,7 @@
       gg.addColorStop(0, '#d4e2dd'); gg.addColorStop(.09, '#769b9f'); gg.addColorStop(.28, '#315873');
       gg.addColorStop(.53, '#263a50'); gg.addColorStop(.74, '#121c29'); gg.addColorStop(1, '#020407');
       c.fillStyle = gg; c.beginPath(); c.arc(0, 0, 78, 0, 7); c.fill();
-      // aperture blades deep inside the glass
-      c.save(); c.globalAlpha = .5; c.translate(4, 6); c.fillStyle = '#040506';
-      for (let i = 0; i < 8; i++) { c.rotate(Math.PI / 4); c.beginPath(); c.moveTo(0, 0); c.lineTo(48, -17); c.lineTo(42, 22); c.closePath(); c.fill(); }
-      c.restore();
+      // Keep the front glass smooth; a polygonal aperture looked distracting here.
       const refl = c.createLinearGradient(-58, -62, 35, 35);
       refl.addColorStop(0, 'rgba(255,255,255,.48)'); refl.addColorStop(.25, 'rgba(170,215,225,.13)'); refl.addColorStop(.52, 'rgba(255,255,255,0)');
       c.fillStyle = refl; c.beginPath(); c.ellipse(-27, -31, 38, 16, -.68, 0, 7); c.fill();
@@ -337,15 +335,23 @@
       const p = progress();
       if (SEQ.mode === 'images') drawImages(p); else drawProcedural(p, now);
 
-      // assembled camera makes room for the About intro:
-      // на телефоне уезжает ВВЕРХ (текст встаёт под ней), с sm: — вправо (текст слева)
+      // The assembled camera dissolves into the photographer portrait for About.
       const ei = easeInOut(seg(p, 0.82, 0.98));
+      const cameraOpacity = 1 - easeInOut(seg(p, 0.84, 0.94));
+      canvas.style.opacity = cameraOpacity.toFixed(3);
+      canvas.style.filter = `blur(${((1 - cameraOpacity) * 7).toFixed(1)}px)`;
       if (window.innerWidth < 640) {
-        const shiftY = window.innerHeight * 0.22;
-        canvas.style.transform = `translateY(${(-ei * shiftY).toFixed(1)}px) scale(${(1 - 0.30 * ei).toFixed(3)})`;
+        const shiftY = window.innerHeight * 0.16;
+        canvas.style.transform = `translateY(${(-ei * shiftY).toFixed(1)}px) scale(${(1 - 0.22 * ei).toFixed(3)})`;
+        if (portrait) portrait.style.transform = `translateX(-50%) translateY(${((1 - ei) * 24).toFixed(1)}px) scale(${(.94 + .06 * ei).toFixed(3)})`;
       } else {
-        const shiftX = window.innerWidth * (window.innerWidth >= 1024 ? 0.27 : 0.26);
-        canvas.style.transform = `translateX(${(ei * shiftX).toFixed(1)}px) scale(${(1 - 0.10 * ei).toFixed(3)})`;
+        const shiftX = window.innerWidth * 0.13;
+        canvas.style.transform = `translateX(${(ei * shiftX).toFixed(1)}px) scale(${(1 - 0.12 * ei).toFixed(3)})`;
+        if (portrait) portrait.style.transform = `translateY(-50%) translateX(${((1 - ei) * 36).toFixed(1)}px) scale(${(.94 + .06 * ei).toFixed(3)})`;
+      }
+      if (portrait) {
+        portrait.style.opacity = ei.toFixed(3);
+        portrait.setAttribute('aria-hidden', String(ei < 0.5));
       }
 
       updateCaps(p);

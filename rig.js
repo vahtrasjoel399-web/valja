@@ -115,8 +115,10 @@
       }
       // lens mount visible behind the lens
       c.fillStyle = '#090a0c'; c.beginPath(); c.arc(0, 30, 132, 0, Math.PI * 2); c.fill();
-      c.strokeStyle = '#77797b'; c.lineWidth = 7; c.beginPath(); c.arc(0, 30, 126, 0, Math.PI * 2); c.stroke();
-      c.strokeStyle = '#202226'; c.lineWidth = 5; c.beginPath(); c.arc(0, 30, 116, 0, Math.PI * 2); c.stroke();
+      // Keep the empty mount dark: a bright outline looked like a stray line
+      // during the first phase, before the sensor and lens arrive.
+      c.strokeStyle = 'rgba(255,255,255,.055)'; c.lineWidth = 2;
+      c.beginPath(); c.arc(0, 30, 124, 0, Math.PI * 2); c.stroke();
       // body seams and front controls
       c.strokeStyle = 'rgba(0,0,0,.55)'; c.lineWidth = 1.5;
       c.beginPath(); c.moveTo(-170, 112); c.quadraticCurveTo(0, 126, 169, 111); c.stroke();
@@ -217,12 +219,6 @@
       c.fillText('Ø82', 68, -56);
       c.restore();
     }
-    function drawRedRing(c) {
-      c.save(); c.translate(0, 30);
-      c.strokeStyle = '#9f1718'; c.lineWidth = 5; c.beginPath(); c.arc(0, 0, 89, 0, 7); c.stroke();
-      c.strokeStyle = 'rgba(255,111,101,.65)'; c.lineWidth = 1; c.beginPath(); c.arc(0, 0, 87, Math.PI * 1.08, Math.PI * 1.72); c.stroke();
-      c.restore();
-    }
     function drawLamp(c) {
       c.shadowColor = '#edb04a'; c.shadowBlur = 8; c.fillStyle = '#e8ac45'; c.beginPath(); c.arc(120, -28, 5, 0, 7); c.fill(); c.shadowBlur = 0;
     }
@@ -259,7 +255,6 @@
       part(seg(p, 0.29, 0.43), 380, 20, drawShutter);
       part(seg(p, 0.30, 0.46), -250, 170, drawSensor, { scale: 0.55, rot: -0.32 });
       part(seg(p, 0.35, 0.58), 480,  -40, drawLens, { scale: 1.5, rot: 0.55 });
-      part(seg(p, 0.54, 0.66), 0, 0, drawRedRing, { scale: 0.35 });
       part(seg(p, 0.62, 0.72), 140, -170, drawLamp, { scale: 0.2 });
 
       // branding fades in once assembled

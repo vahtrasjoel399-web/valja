@@ -2,20 +2,73 @@
     'use strict';
 
     /* ---------- Gallery data ---------- */
-    let CATS = { portrait: 'Портрет', wedding: 'Свадьба', content: 'Контент', kids: 'Дети' };
+    let CATS = { portrait: 'Портрет', couple: 'Пары', wedding: 'Свадьба', family: 'Семья' };
     const items = [
-      { img: '1508214751196-bcfd4ca60f91', cat: 'portrait', r: '3/4', title: 'Мягкий свет окна' },
-      { img: '1529636798458-92182e662485', cat: 'wedding',  r: '4/5', title: 'Первый танец' },
-      { img: '1503454537195-1dcabb73ffb9', cat: 'kids',     r: '1/1', title: 'Босиком по траве' },
-      { img: '1522199755839-a2bacb67c546', cat: 'content',  r: '4/5', title: 'Утро бренда' },
-      { img: '1494790108377-be9c29b29330', cat: 'portrait', r: '4/5', title: 'Взгляд' },
-      { img: '1537633552985-df8429e8048b', cat: 'wedding',  r: '3/4', title: 'Сборы невесты' },
-      { img: '1544005313-94ddf0286df2',    cat: 'portrait', r: '1/1', title: 'Тёплый профиль' },
-      { img: '1516627145497-ae6968895b74', cat: 'kids',     r: '3/4', title: 'Смех' },
-      { img: '1606216794074-735e91aa2c92', cat: 'content',  r: '1/1', title: 'Деталь' },
-      { img: '1583939003579-730e3918a45a', cat: 'wedding',  r: '4/5', title: 'Вдвоём' },
-      { img: '1524504388940-b1c1722653e1', cat: 'portrait', r: '4/5', title: 'Город на закате' },
-      { img: '1567532939604-b6b5b0db2604', cat: 'content',  r: '3/4', title: 'Студийный кадр' },
+      { url: 'assets/portfolio/04.jpg', cat: 'family', r: '3/2', title: 'Мирослава с семьёй' },
+      { url: 'assets/portfolio/01.jpg', cat: 'portrait', r: '3/2', title: 'Анна в одуванчиках' },
+      { url: 'assets/portfolio/32.webp', cat: 'couple', r: '2/3', title: 'Алекс и Алеся — вместе' },
+      { url: 'assets/portfolio/18.webp', cat: 'portrait', r: '2/3', title: 'Алиса — портрет' },
+      { url: 'assets/portfolio/38.webp', cat: 'wedding', r: '2/3', title: 'Николай и Анастасия — поцелуй' },
+      { url: 'assets/portfolio/05.jpg', cat: 'portrait', r: '3/2', title: 'Алиса на закате' },
+      { url: 'assets/portfolio/43.webp', cat: 'family', r: '2/3', title: 'Семья Мирославы' },
+      { url: 'assets/portfolio/19.webp', cat: 'portrait', r: '2/3', title: 'Анна — солнечный вечер' },
+      { url: 'assets/portfolio/35.webp', cat: 'couple', r: '2/3', title: 'Кристиян и Лиза — близко' },
+      { url: 'assets/portfolio/09.jpg', cat: 'portrait', r: '3/2', title: 'Эвелина' },
+      { url: 'assets/portfolio/41.webp', cat: 'wedding', r: '2/3', title: 'Сергей и Мария — прогулка' },
+      { url: 'assets/portfolio/20.webp', cat: 'portrait', r: '2/3', title: 'Анна в воде' },
+      { url: 'assets/portfolio/46.webp', cat: 'family', r: '2/3', title: 'Анна и Дамир — прогулка' },
+      { url: 'assets/portfolio/11.jpg', cat: 'portrait', r: '2/3', title: 'Анна у моря' },
+      { url: 'assets/portfolio/17.webp', cat: 'couple', r: '2/3', title: 'Алекс и Алеся — взгляд' },
+      { url: 'assets/portfolio/22.webp', cat: 'portrait', r: '2/3', title: 'Эвелина у мельницы' },
+      { url: 'assets/portfolio/03.jpg', cat: 'wedding', r: '2/3', title: 'Начало свадебного дня' },
+      { url: 'assets/portfolio/12.jpg', cat: 'portrait', r: '2/3', title: 'Стефания' },
+      { url: 'assets/portfolio/50.webp', cat: 'family', r: '3/2', title: 'Папа с малышом' },
+      { url: 'assets/portfolio/28.webp', cat: 'portrait', r: '2/3', title: 'В ожидании' },
+      { url: 'assets/portfolio/02.jpg', cat: 'couple', r: '3/2', title: 'Кристиян и Лиза' },
+      { url: 'assets/portfolio/14.jpg', cat: 'portrait', r: '2/3', title: 'Материнство' },
+      { url: 'assets/portfolio/06.jpg', cat: 'wedding', r: '2/3', title: 'Сергей и Мария' },
+      { url: 'assets/portfolio/55.webp', cat: 'family', r: '2/3', title: 'Таня и Вова с малышом' },
+      { url: 'assets/portfolio/33.webp', cat: 'couple', r: '2/3', title: 'Алекс и Алеся — у моря' },
+      { url: 'assets/portfolio/26.webp', cat: 'wedding', r: '2/3', title: 'Николай и Анастасия' },
+      { url: 'assets/portfolio/59.webp', cat: 'family', r: '2/3', title: 'Первое знакомство' },
+      { url: 'assets/portfolio/36.webp', cat: 'couple', r: '2/3', title: 'Кристиян и Лиза — на берегу' },
+      { url: 'assets/portfolio/42.webp', cat: 'wedding', r: '2/3', title: 'Сергей и Мария — счастье' },
+      { url: 'assets/portfolio/62.webp', cat: 'family', r: '2/3', title: 'Мамины объятия' },
+      { url: 'assets/portfolio/34.webp', cat: 'couple', r: '2/3', title: 'Алекс и Алеся — нежность' },
+      { url: 'assets/portfolio/27.webp', cat: 'wedding', r: '2/3', title: 'У алтаря' },
+      { url: 'assets/portfolio/23.webp', cat: 'family', r: '2/3', title: 'Ирина и Стефания' },
+      { url: 'assets/portfolio/37.webp', cat: 'couple', r: '2/3', title: 'Кристиян и Лиза — в воде' },
+      { url: 'assets/portfolio/39.webp', cat: 'wedding', r: '2/3', title: 'Николай и Анастасия — тихий момент' },
+      { url: 'assets/portfolio/08.jpg', cat: 'family', r: '2/3', title: 'Анна и Дамир' },
+      { url: 'assets/portfolio/07.jpg', cat: 'couple', r: '3/2', title: 'Алекс и Алеся' },
+      { url: 'assets/portfolio/40.webp', cat: 'wedding', r: '2/3', title: 'Николай и Анастасия — вдвоём' },
+      { url: 'assets/portfolio/10.jpg', cat: 'family', r: '3/2', title: 'Семья Демченко' },
+      { url: 'assets/portfolio/24.webp', cat: 'couple', r: '2/3', title: 'Кристиян и Лиза — у воды' },
+      { url: 'assets/portfolio/44.webp', cat: 'family', r: '2/3', title: 'Праздник Мирославы' },
+      { url: 'assets/portfolio/13.jpg', cat: 'family', r: '3/2', title: 'Семья Захаровых' },
+      { url: 'assets/portfolio/15.jpg', cat: 'family', r: '3/2', title: 'Первые дни вместе' },
+      { url: 'assets/portfolio/16.jpg', cat: 'family', r: '2/3', title: 'Таня и Вова' },
+      { url: 'assets/portfolio/21.webp', cat: 'family', r: '2/3', title: 'Зимняя прогулка' },
+      { url: 'assets/portfolio/25.webp', cat: 'family', r: '2/3', title: 'Поцелуй для малышки' },
+      { url: 'assets/portfolio/29.webp', cat: 'family', r: '2/3', title: 'Таня с малышом' },
+      { url: 'assets/portfolio/30.webp', cat: 'family', r: '2/3', title: 'Новорождённый дома' },
+      { url: 'assets/portfolio/31.webp', cat: 'family', r: '2/3', title: 'Семья у моря' },
+      { url: 'assets/portfolio/45.webp', cat: 'family', r: '2/3', title: 'Мирослава с мамой' },
+      { url: 'assets/portfolio/47.webp', cat: 'family', r: '2/3', title: 'Анна и Дамир — игра' },
+      { url: 'assets/portfolio/48.webp', cat: 'family', r: '2/3', title: 'Мама и сын' },
+      { url: 'assets/portfolio/49.webp', cat: 'family', r: '2/3', title: 'Осенний день' },
+      { url: 'assets/portfolio/51.webp', cat: 'family', r: '3/2', title: 'Зимняя история Демченко' },
+      { url: 'assets/portfolio/52.webp', cat: 'family', r: '2/3', title: 'Семья в снегу' },
+      { url: 'assets/portfolio/53.webp', cat: 'family', r: '2/3', title: 'Ирина со Стефанией' },
+      { url: 'assets/portfolio/54.webp', cat: 'family', r: '2/3', title: 'Домашняя игра' },
+      { url: 'assets/portfolio/56.webp', cat: 'family', r: '2/3', title: 'Семейное Рождество' },
+      { url: 'assets/portfolio/57.webp', cat: 'family', r: '2/3', title: 'Мама и малыш' },
+      { url: 'assets/portfolio/58.webp', cat: 'family', r: '2/3', title: 'Таня и Вова — дома' },
+      { url: 'assets/portfolio/60.webp', cat: 'family', r: '2/3', title: 'Родительская нежность' },
+      { url: 'assets/portfolio/61.webp', cat: 'family', r: '2/3', title: 'Мама с новорождённым' },
+      { url: 'assets/portfolio/63.webp', cat: 'family', r: '2/3', title: 'Семья Захаровых — вместе' },
+      { url: 'assets/portfolio/64.webp', cat: 'family', r: '3/2', title: 'Прогулка у моря' },
+      { url: 'assets/portfolio/65.webp', cat: 'family', r: '2/3', title: 'Семейный вечер' },
     ];
 
     const gallery = document.getElementById('gallery');
@@ -25,7 +78,10 @@
     /* admin-added photos live in localStorage and merge into the gallery */
     const ADMIN_PHOTOS_KEY = 'val_admin_photos';
     function loadAdminPhotos() {
-      try { return JSON.parse(localStorage.getItem(ADMIN_PHOTOS_KEY)) || []; }
+      try {
+        const saved = JSON.parse(localStorage.getItem(ADMIN_PHOTOS_KEY)) || [];
+        return saved.filter(photo => ['portrait', 'couple', 'wedding', 'family'].includes(photo.cat));
+      }
       catch (e) { return []; }
     }
     function saveAdminPhotos(list) { localStorage.setItem(ADMIN_PHOTOS_KEY, JSON.stringify(list)); }
@@ -40,7 +96,7 @@
     function render(list) {
       gallery.innerHTML = list.map((it, i) => `
         <figure class="ph-card group relative overflow-hidden rounded-sm bg-sand cursor-pointer reveal in" data-index="${i}" tabindex="0" role="button" aria-label="Открыть фото: ${it.title}">
-          <img src="${srcOf(it, ...sizeOf(it.r))}" alt="${it.title} — ${CATS[it.cat]}" loading="lazy" class="ph-img w-full object-cover" style="aspect-ratio:${it.r}" />
+          <img src="${srcOf(it, ...sizeOf(it.r))}" alt="${it.title} — ${CATS[it.cat]}" loading="${i < 3 ? 'eager' : 'lazy'}" fetchpriority="${i < 3 ? 'high' : 'low'}" decoding="async" class="ph-img w-full object-cover" style="aspect-ratio:${it.r}" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           <figcaption class="absolute bottom-0 inset-x-0 p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
             <span class="block text-[11px] uppercase tracking-widest text-white/70">${CATS[it.cat]}</span>
@@ -205,7 +261,7 @@
     const I18N = {
       ru: {
         __doc: 'Валентина Орлова — Фотограф',
-        __cats: { portrait: 'Портрет', wedding: 'Свадьба', content: 'Контент', kids: 'Дети' },
+        __cats: { portrait: 'Портрет', couple: 'Пары', wedding: 'Свадьба', family: 'Семья' },
         nav_portfolio: 'Портфолио', nav_about: 'Обо мне', nav_prices: 'Цены', nav_reviews: 'Отзывы',
         nav_book: 'Записаться', nav_book_full: 'Записаться на съёмку', menu_open: 'Открыть меню',
         hero_eyebrow: 'Фотограф · Таллинн & путешествия',
@@ -215,7 +271,7 @@
         trust_years: 'лет в фотографии', trust_shoots: 'съёмок', trust_memories: 'тёплых воспоминаний',
         portfolio_eyebrow: 'Портфолио', portfolio_title: 'Избранные работы',
         portfolio_sub: 'Каждая съёмка — отдельная история. Выберите категорию, чтобы посмотреть ближе.',
-        filter_all: 'Все', filter_portrait: 'Портрет', filter_wedding: 'Свадьбы', filter_content: 'Контент', filter_kids: 'Дети',
+        filter_all: 'Все', filter_portrait: 'Портреты', filter_couple: 'Пары', filter_wedding: 'Свадьбы', filter_family: 'Семейные',
         rig_eyebrow1: 'Чем я снимаю', rig_title1: 'Каждый кадр<br />начинается здесь',
         rig_sub1: 'Прокрутите вниз — соберём её по детали',
         rig_sub3: 'Мой основной инструмент для портрета и репортажа', rig_cta: 'Смотреть кадры с неё',
@@ -266,7 +322,7 @@
       },
       et: {
         __doc: 'Valentina Orlova — Fotograaf',
-        __cats: { portrait: 'Portree', wedding: 'Pulm', content: 'Sisu', kids: 'Lapsed' },
+        __cats: { portrait: 'Portree', couple: 'Paar', wedding: 'Pulm', family: 'Pere' },
         nav_portfolio: 'Portfoolio', nav_about: 'Minust', nav_prices: 'Hinnad', nav_reviews: 'Arvustused',
         nav_book: 'Broneeri', nav_book_full: 'Broneeri pildistamine', menu_open: 'Ava menüü',
         hero_eyebrow: 'Fotograaf · Tallinn & reisid',
@@ -276,7 +332,7 @@
         trust_years: 'aastat fotograafias', trust_shoots: 'pildistamist', trust_memories: 'sooja mälestust',
         portfolio_eyebrow: 'Portfoolio', portfolio_title: 'Valitud tööd',
         portfolio_sub: 'Iga pildistamine on omaette lugu. Vali kategooria, et vaadata lähemalt.',
-        filter_all: 'Kõik', filter_portrait: 'Portree', filter_wedding: 'Pulmad', filter_content: 'Sisu', filter_kids: 'Lapsed',
+        filter_all: 'Kõik', filter_portrait: 'Portreed', filter_couple: 'Paarid', filter_wedding: 'Pulmad', filter_family: 'Pered',
         rig_eyebrow1: 'Millega ma pildistan', rig_title1: 'Iga kaader<br />algab siit',
         rig_sub1: 'Keri alla — paneme selle detailhaaval kokku',
         rig_sub3: 'Minu põhitööriist portree ja reportaaži jaoks', rig_cta: 'Vaata sellega tehtud kaadreid',
@@ -327,7 +383,7 @@
       },
       en: {
         __doc: 'Valentina Orlova — Photographer',
-        __cats: { portrait: 'Portrait', wedding: 'Wedding', content: 'Content', kids: 'Kids' },
+        __cats: { portrait: 'Portrait', couple: 'Couple', wedding: 'Wedding', family: 'Family' },
         nav_portfolio: 'Portfolio', nav_about: 'About', nav_prices: 'Pricing', nav_reviews: 'Reviews',
         nav_book: 'Book', nav_book_full: 'Book a session', menu_open: 'Open menu',
         hero_eyebrow: 'Photographer · Tallinn & travel',
@@ -337,7 +393,7 @@
         trust_years: 'years in photography', trust_shoots: 'sessions', trust_memories: 'warm memories',
         portfolio_eyebrow: 'Portfolio', portfolio_title: 'Selected work',
         portfolio_sub: 'Every shoot is its own story. Pick a category to take a closer look.',
-        filter_all: 'All', filter_portrait: 'Portrait', filter_wedding: 'Weddings', filter_content: 'Content', filter_kids: 'Kids',
+        filter_all: 'All', filter_portrait: 'Portraits', filter_couple: 'Couples', filter_wedding: 'Weddings', filter_family: 'Families',
         rig_eyebrow1: 'What I shoot with', rig_title1: 'Every frame<br />begins here',
         rig_sub1: 'Scroll down — we\'ll assemble it piece by piece',
         rig_sub3: 'My main tool for portraits and reportage', rig_cta: 'See shots from it',

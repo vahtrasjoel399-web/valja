@@ -6,7 +6,7 @@ export type Dict = Record<string, string> & {
 
 export const I18N: Record<Lang, Dict> = {
   ru: {
-    __cats: { portrait: 'Портрет', wedding: 'Свадьба', content: 'Контент', kids: 'Дети' },
+    __cats: { portrait: 'Портрет', couple: 'Пары', wedding: 'Свадьба', family: 'Семья' },
     nav_portfolio: 'Портфолио', nav_about: 'Обо мне', nav_prices: 'Цены', nav_reviews: 'Отзывы',
     nav_book: 'Записаться', nav_book_full: 'Записаться на съёмку', menu_open: 'Открыть меню',
     hero_eyebrow: 'Фотограф · Таллинн & путешествия',
@@ -16,7 +16,7 @@ export const I18N: Record<Lang, Dict> = {
     trust_years: 'лет в фотографии', trust_shoots: 'съёмок', trust_memories: 'тёплых воспоминаний',
     portfolio_eyebrow: 'Портфолио', portfolio_title: 'Избранные работы',
     portfolio_sub: 'Каждая съёмка — отдельная история. Выберите категорию, чтобы посмотреть ближе.',
-    filter_all: 'Все', filter_portrait: 'Портрет', filter_wedding: 'Свадьбы', filter_content: 'Контент', filter_kids: 'Дети',
+    filter_all: 'Все', filter_portrait: 'Портреты', filter_couple: 'Пары', filter_wedding: 'Свадьбы', filter_family: 'Семейные',
     rig_eyebrow1: 'Чем я снимаю', rig_title1: 'Каждый кадр<br />начинается здесь',
     rig_sub1: 'Прокрутите вниз — соберём её по детали',
     rig_sub3: 'Мой основной инструмент для портрета и репортажа', rig_cta: 'Смотреть кадры с неё',
@@ -65,7 +65,7 @@ export const I18N: Record<Lang, Dict> = {
     g_preparing: 'Готовлю архив…', g_empty: 'В этой галерее пока нет фотографий', g_not_found: 'Галерея не найдена',
   },
   et: {
-    __cats: { portrait: 'Portree', wedding: 'Pulm', content: 'Sisu', kids: 'Lapsed' },
+    __cats: { portrait: 'Portree', couple: 'Paar', wedding: 'Pulm', family: 'Pere' },
     nav_portfolio: 'Portfoolio', nav_about: 'Minust', nav_prices: 'Hinnad', nav_reviews: 'Arvustused',
     nav_book: 'Broneeri', nav_book_full: 'Broneeri pildistamine', menu_open: 'Ava menüü',
     hero_eyebrow: 'Fotograaf · Tallinn & reisid',
@@ -75,7 +75,7 @@ export const I18N: Record<Lang, Dict> = {
     trust_years: 'aastat fotograafias', trust_shoots: 'pildistamist', trust_memories: 'sooja mälestust',
     portfolio_eyebrow: 'Portfoolio', portfolio_title: 'Valitud tööd',
     portfolio_sub: 'Iga pildistamine on omaette lugu. Vali kategooria, et vaadata lähemalt.',
-    filter_all: 'Kõik', filter_portrait: 'Portree', filter_wedding: 'Pulmad', filter_content: 'Sisu', filter_kids: 'Lapsed',
+    filter_all: 'Kõik', filter_portrait: 'Portreed', filter_couple: 'Paarid', filter_wedding: 'Pulmad', filter_family: 'Pered',
     rig_eyebrow1: 'Millega ma pildistan', rig_title1: 'Iga kaader<br />algab siit',
     rig_sub1: 'Keri alla — paneme selle detailhaaval kokku',
     rig_sub3: 'Minu põhitööriist portree ja reportaaži jaoks', rig_cta: 'Vaata sellega tehtud kaadreid',
@@ -123,7 +123,7 @@ export const I18N: Record<Lang, Dict> = {
     g_preparing: 'Valmistan arhiivi…', g_empty: 'Selles galeriis pole veel fotosid', g_not_found: 'Galeriid ei leitud',
   },
   en: {
-    __cats: { portrait: 'Portrait', wedding: 'Wedding', content: 'Content', kids: 'Kids' },
+    __cats: { portrait: 'Portrait', couple: 'Couple', wedding: 'Wedding', family: 'Family' },
     nav_portfolio: 'Portfolio', nav_about: 'About', nav_prices: 'Pricing', nav_reviews: 'Reviews',
     nav_book: 'Book', nav_book_full: 'Book a session', menu_open: 'Open menu',
     hero_eyebrow: 'Photographer · Tallinn & travel',
@@ -133,7 +133,7 @@ export const I18N: Record<Lang, Dict> = {
     trust_years: 'years in photography', trust_shoots: 'sessions', trust_memories: 'warm memories',
     portfolio_eyebrow: 'Portfolio', portfolio_title: 'Selected work',
     portfolio_sub: 'Every shoot is its own story. Pick a category to take a closer look.',
-    filter_all: 'All', filter_portrait: 'Portrait', filter_wedding: 'Weddings', filter_content: 'Content', filter_kids: 'Kids',
+    filter_all: 'All', filter_portrait: 'Portraits', filter_couple: 'Couples', filter_wedding: 'Weddings', filter_family: 'Families',
     rig_eyebrow1: 'What I shoot with', rig_title1: 'Every frame<br />begins here',
     rig_sub1: "Scroll down — we'll assemble it piece by piece",
     rig_sub3: 'My main tool for portraits and reportage', rig_cta: 'See shots from it',

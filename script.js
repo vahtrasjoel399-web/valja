@@ -85,20 +85,38 @@
     const sizeOf = r => (r === '1/1' ? [700, 700] : r === '4/5' ? [700, 875] : [700, 933]);
     const srcOf = it => it.url;
 
-    /* admin-added photos live in localStorage and merge into the gallery */
+    // This static site's photo edits are stored in this browser only.
+    const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
+    const photoId = photo => photo.id || photo.url;
+    const HIDDEN_PHOTOS_KEY = 'val_hidden_photos';
+    function loadHiddenPhotos() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(HIDDEN_PHOTOS_KEY));
+        return Array.isArray(saved) ? saved.filter(id => typeof id === 'string') : [];
+      } catch { return []; }
+    }
+    function loadVisiblePhotos() {
+      const hidden = new Set(loadHiddenPhotos());
+      return items.filter(photo => !hidden.has(photoId(photo))).concat(loadAdminPhotos());
+    }
     const ADMIN_PHOTOS_KEY = 'val_admin_photos';
     function loadAdminPhotos() {
       try {
         const saved = JSON.parse(localStorage.getItem(ADMIN_PHOTOS_KEY)) || [];
-        return saved.filter(photo => ['portrait', 'couple', 'wedding', 'family'].includes(photo.cat));
+        return Array.isArray(saved) ? saved.filter(photo => photo && typeof photo.id === 'string' &&
+          typeof photo.title === 'string' && typeof photo.url === 'string' &&
+          /^data:image\/(jpeg|png|webp|gif|avif);base64,/i.test(photo.url) &&
+          ['3/2', '2/3', '3/4', '4/5', '1/1'].includes(photo.r) &&
+          ['portrait', 'couple', 'wedding', 'family'].includes(photo.cat)) : [];
       }
       catch (e) { return []; }
     }
     function saveAdminPhotos(list) { localStorage.setItem(ADMIN_PHOTOS_KEY, JSON.stringify(list)); }
-    let allItems = items.concat(loadAdminPhotos());
+    let allItems = loadVisiblePhotos();
     let activeFilter = 'all';
     let visibleAllCount = ALL_PAGE_SIZE;
-    function rebuild() { allItems = items.concat(loadAdminPhotos()); applyFilter(); }
+    function rebuild() { allItems = loadVisiblePhotos(); applyFilter(); }
     function applyFilter() {
       const filtered = activeFilter === 'all' ? allItems : allItems.filter(it => it.cat === activeFilter);
       current = activeFilter === 'all' ? filtered.slice(0, visibleAllCount) : filtered.slice();
@@ -108,12 +126,12 @@
 
     function render(list) {
       gallery.innerHTML = list.map((it, i) => `
-        <figure class="ph-card gallery-enter group relative overflow-hidden rounded-sm bg-sand cursor-pointer" style="--card-delay:${Math.min(i, 9) * 45}ms" data-index="${i}" tabindex="0" role="button" aria-label="Открыть фото: ${it.title}">
-          <img src="${srcOf(it, ...sizeOf(it.r))}" alt="${it.title} — ${CATS[it.cat]}" loading="${i < 3 ? 'eager' : 'lazy'}" fetchpriority="${i < 3 ? 'high' : 'low'}" decoding="async" class="ph-img w-full object-cover" style="aspect-ratio:${it.r}" />
+        <figure class="ph-card gallery-enter group relative overflow-hidden rounded-sm bg-sand cursor-pointer" style="--card-delay:${Math.min(i, 9) * 45}ms" data-index="${i}" tabindex="0" role="button" aria-label="Открыть фото: ${escapeHtml(it.title)}">
+          <img src="${escapeHtml(srcOf(it, ...sizeOf(it.r)))}" alt="${escapeHtml(it.title)} — ${CATS[it.cat]}" loading="${i < 3 ? 'eager' : 'lazy'}" fetchpriority="${i < 3 ? 'high' : 'low'}" decoding="async" class="ph-img w-full object-cover" style="aspect-ratio:${it.r}" />
           <div class="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           <figcaption class="absolute bottom-0 inset-x-0 p-4 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
             <span class="block text-[11px] uppercase tracking-widest text-white/70">${CATS[it.cat]}</span>
-            <span class="block text-white text-sm font-medium">${it.title}</span>
+            <span class="block text-white text-sm font-medium">${escapeHtml(it.title)}</span>
           </figcaption>
           <span class="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/85 text-ink opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.3-4.3M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm-3-8h6M11 8v6"/></svg>
@@ -324,8 +342,17 @@
         admin_user_label: 'Имя пользователя', admin_pass_label: 'Пароль', admin_login_btn: 'Войти',
         admin_error: 'Неверное имя пользователя или пароль', admin_panel_title: 'Управление фотографиями',
         admin_cat_label: 'Раздел', admin_ratio_label: 'Формат', admin_title_label: 'Подпись',
-        admin_file_label: 'Файл фотографии', admin_add_btn: 'Добавить фото', admin_existing: 'Добавленные фото',
-        admin_empty: 'Пока нет добавленных фото', admin_logout: 'Выйти'
+        admin_file_label: 'Файл фотографии', admin_add_btn: 'Добавить фото', admin_existing: 'Все фотографии',
+        admin_empty: 'В галерее пока нет фотографий', admin_logout: 'Выйти',
+        admin_delete: 'Удалить',
+        admin_deleted: 'Фото удалено.',
+        admin_undo: 'Отменить удаление',
+        admin_save_error: 'Не удалось сохранить изменения. Возможно, память браузера заполнена.',
+        admin_file_error: 'Выберите изображение JPEG, PNG, WebP, GIF или AVIF.',
+        admin_adding: 'Добавляем…',
+        admin_added: 'Фото добавлено.',
+        admin_read_error: 'Не удалось прочитать изображение.',
+        admin_local_note: 'Изменения видны только в этом браузере.'
       },
       et: {
         __doc: 'Valentina Šestero — fotograaf',
@@ -375,8 +402,17 @@
         admin_user_label: 'Kasutajanimi', admin_pass_label: 'Parool', admin_login_btn: 'Logi sisse',
         admin_error: 'Vale kasutajanimi või parool', admin_panel_title: 'Fotode haldus',
         admin_cat_label: 'Kategooria', admin_ratio_label: 'Kuvasuhe', admin_title_label: 'Pealkiri',
-        admin_file_label: 'Foto fail', admin_add_btn: 'Lisa foto', admin_existing: 'Lisatud fotod',
-        admin_empty: 'Lisatud fotosid veel pole', admin_logout: 'Logi välja'
+        admin_file_label: 'Foto fail', admin_add_btn: 'Lisa foto', admin_existing: 'Kõik fotod',
+        admin_empty: 'Galeriis pole veel fotosid', admin_logout: 'Logi välja',
+        admin_delete: 'Kustuta',
+        admin_deleted: 'Foto kustutatud.',
+        admin_undo: 'Võta kustutamine tagasi',
+        admin_save_error: 'Muudatusi ei saanud salvestada. Brauseri salvestusruum võib olla täis.',
+        admin_file_error: 'Valige JPEG-, PNG-, WebP-, GIF- või AVIF-pilt.',
+        admin_adding: 'Lisamine…',
+        admin_added: 'Foto lisatud.',
+        admin_read_error: 'Pilti ei saanud lugeda.',
+        admin_local_note: 'Muudatused on nähtavad ainult selles brauseris.'
       },
       en: {
         __doc: 'Valentina Šestero — photographer',
@@ -426,8 +462,17 @@
         admin_user_label: 'Username', admin_pass_label: 'Password', admin_login_btn: 'Log in',
         admin_error: 'Wrong username or password', admin_panel_title: 'Photo manager',
         admin_cat_label: 'Section', admin_ratio_label: 'Aspect ratio', admin_title_label: 'Caption',
-        admin_file_label: 'Photo file', admin_add_btn: 'Add photo', admin_existing: 'Added photos',
-        admin_empty: 'No added photos yet', admin_logout: 'Log out'
+        admin_file_label: 'Photo file', admin_add_btn: 'Add photo', admin_existing: 'All photos',
+        admin_empty: 'No photos in the gallery', admin_logout: 'Log out',
+        admin_delete: 'Delete',
+        admin_deleted: 'Photo deleted.',
+        admin_undo: 'Undo deletion',
+        admin_save_error: 'Could not save changes. Browser storage may be full.',
+        admin_file_error: 'Choose a JPEG, PNG, WebP, GIF or AVIF image.',
+        admin_adding: 'Adding…',
+        admin_added: 'Photo added.',
+        admin_read_error: 'Could not read the image.',
+        admin_local_note: 'Changes are visible only in this browser.'
       }
     };
 
@@ -435,8 +480,8 @@
 
     function applyLang(lang) {
       const dict = I18N[lang] || I18N.ru;
-      currentLang = lang;
-      document.documentElement.lang = lang;
+      currentLang = I18N[lang] ? lang : 'ru';
+      document.documentElement.lang = currentLang;
       document.title = dict.__doc;
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const v = dict[el.getAttribute('data-i18n')];
@@ -456,9 +501,9 @@
       });
       CATS = dict.__cats;
       applyFilter();
-      localStorage.setItem('val_lang', lang);
+      localStorage.setItem('val_lang', currentLang);
       document.querySelectorAll('.lang-btn').forEach(b => {
-        const on = b.dataset.lang === lang;
+        const on = b.dataset.lang === currentLang;
         b.classList.toggle('bg-ink', on);
         b.classList.toggle('text-white', on);
         b.classList.toggle('text-faint', !on);
@@ -505,25 +550,40 @@
     const adminError = document.getElementById('adminError');
     const adminList  = document.getElementById('adminList');
     const adminEmpty = document.getElementById('adminEmpty');
+    const adminStatus = document.getElementById('adminStatus');
+    const adminUndo = document.getElementById('adminUndo');
+    let lastDeleted = null;
+    let adminLastFocus = null;
+    const adminText = key => (I18N[currentLang] || I18N.ru)[key];
+    function notifyAdmin(key, error = false) {
+      adminStatus.textContent = adminText(key);
+      adminStatus.classList.toggle('text-red-600', error);
+    }
 
     function isAuthed() { return sessionStorage.getItem('val_admin_auth') === '1'; }
     function renderAdminList() {
-      const photos = loadAdminPhotos();
+      const photos = loadVisiblePhotos();
       adminEmpty.style.display = photos.length ? 'none' : '';
       adminList.innerHTML = photos.map(p => `
-        <div class="relative group rounded-sm overflow-hidden border border-line">
-          <img src="${p.url}" alt="${p.title || ''}" class="w-full h-24 object-cover" />
-          <button data-del="${p.id}" class="absolute top-1 right-1 flex h-7 w-7 items-center justify-center rounded-full bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer" aria-label="delete">
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></svg>
-          </button>
-        </div>`).join('');
+        <article class="admin-photo">
+          <img src="${escapeHtml(p.url)}" alt="${escapeHtml(p.title)}" loading="lazy" />
+          <div class="admin-photo-info">
+            <p class="admin-photo-title" title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</p>
+            <p class="admin-photo-category">${escapeHtml(CATS[p.cat])}</p>
+            <button type="button" data-del="${escapeHtml(photoId(p))}" class="admin-delete" aria-label="${escapeHtml(adminText('admin_delete') + ': ' + p.title)}">
+              ${adminText('admin_delete')}
+            </button>
+          </div>
+        </article>`).join('');
+      document.getElementById('adminCount').textContent = photos.length;
+      adminUndo.classList.toggle('hidden', !lastDeleted);
     }
     function showAdminView() {
       if (isAuthed()) { adminLogin.classList.add('hidden'); adminPanel.classList.remove('hidden'); renderAdminList(); }
       else { adminPanel.classList.add('hidden'); adminLogin.classList.remove('hidden'); }
     }
-    function openAdmin() { adminModal.classList.remove('hidden'); adminModal.classList.add('flex'); document.body.style.overflow = 'hidden'; showAdminView(); }
-    function closeAdmin() { adminModal.classList.add('hidden'); adminModal.classList.remove('flex'); document.body.style.overflow = ''; }
+    function openAdmin() { adminLastFocus = document.activeElement; adminModal.classList.remove('hidden'); adminModal.classList.add('flex'); document.body.style.overflow = 'hidden'; showAdminView(); document.getElementById(isAuthed() ? 'adminCat' : 'adminUser').focus(); }
+    function closeAdmin() { adminModal.classList.add('hidden'); adminModal.classList.remove('flex'); document.body.style.overflow = ''; if (adminLastFocus) adminLastFocus.focus(); }
 
     document.getElementById('adminClose').addEventListener('click', closeAdmin);
     adminModal.addEventListener('click', e => { if (e.target === adminModal) closeAdmin(); });
@@ -537,6 +597,7 @@
         adminError.classList.add('hidden');
         document.getElementById('adminPass').value = '';
         showAdminView();
+        document.getElementById('adminCat').focus();
       } else {
         adminError.classList.remove('hidden');
       }
@@ -545,37 +606,98 @@
     document.getElementById('adminLogout').addEventListener('click', () => {
       sessionStorage.removeItem('val_admin_auth');
       showAdminView();
+      document.getElementById('adminUser').focus();
     });
 
     document.getElementById('adminAddForm').addEventListener('submit', e => {
       e.preventDefault();
+      if (!isAuthed()) return;
+      const form = e.target;
       const file = document.getElementById('adminFile').files[0];
-      if (!file) return;
+      if (!file || !/^image\/(jpeg|png|webp|gif|avif)$/i.test(file.type)) {
+        notifyAdmin('admin_file_error', true);
+        return;
+      }
+      const cat = document.getElementById('adminCat').value;
+      const photo = {
+        id: 'a' + crypto.randomUUID(), cat,
+        r: document.getElementById('adminRatio').value,
+        title: document.getElementById('adminTitle').value.trim() || CATS[cat]
+      };
+      const submit = form.querySelector('[type="submit"]');
+      if (submit.disabled) return;
+      submit.disabled = true;
+      submit.textContent = adminText('admin_adding');
+      const finish = () => { submit.disabled = false; submit.textContent = adminText('admin_add_btn'); };
       const reader = new FileReader();
       reader.onload = () => {
-        const photos = loadAdminPhotos();
-        photos.push({
-          id: 'a' + Date.now(),
-          url: reader.result,
-          cat: document.getElementById('adminCat').value,
-          r: document.getElementById('adminRatio').value,
-          title: document.getElementById('adminTitle').value.trim() || CATS[document.getElementById('adminCat').value]
-        });
-        try { saveAdminPhotos(photos); }
-        catch (err) { alert('Storage full — try a smaller image.'); return; }
-        rebuild();
-        renderAdminList();
-        e.target.reset();
+        if (!isAuthed()) { finish(); return; }
+        const preview = new Image();
+        preview.onload = () => {
+          if (!isAuthed()) { finish(); return; }
+          try { saveAdminPhotos(loadAdminPhotos().concat({ ...photo, url: reader.result })); }
+          catch { notifyAdmin('admin_save_error', true); finish(); return; }
+          rebuild();
+          renderAdminList();
+          form.reset();
+          notifyAdmin('admin_added');
+          finish();
+        };
+        preview.onerror = () => { notifyAdmin('admin_read_error', true); finish(); };
+        preview.src = reader.result;
       };
+      reader.onerror = reader.onabort = () => { notifyAdmin('admin_read_error', true); finish(); };
       reader.readAsDataURL(file);
     });
 
     adminList.addEventListener('click', e => {
       const btn = e.target.closest('[data-del]');
-      if (!btn) return;
-      saveAdminPhotos(loadAdminPhotos().filter(p => p.id !== btn.dataset.del));
+      if (!btn || !isAuthed()) return;
+      const id = btn.dataset.del;
+      const photo = loadVisiblePhotos().find(p => photoId(p) === id);
+      if (!photo) return;
+      const uploaded = loadAdminPhotos();
+      const position = uploaded.findIndex(p => photoId(p) === id);
+      const buttons = [...adminList.querySelectorAll('[data-del]')];
+      const focusIndex = buttons.indexOf(btn);
+      try {
+        if (position >= 0) saveAdminPhotos(uploaded.filter(p => photoId(p) !== id));
+        else localStorage.setItem(HIDDEN_PHOTOS_KEY, JSON.stringify([...new Set([...loadHiddenPhotos(), id])]));
+      } catch { notifyAdmin('admin_save_error', true); return; }
+      lastDeleted = { photo, position };
       rebuild();
       renderAdminList();
+      notifyAdmin('admin_deleted');
+      const remaining = adminList.querySelectorAll('[data-del]');
+      (remaining[Math.min(focusIndex, remaining.length - 1)] || adminUndo).focus();
+    });
+
+    adminUndo.addEventListener('click', () => {
+      if (!lastDeleted || !isAuthed()) return;
+      const { photo, position } = lastDeleted;
+      try {
+        if (position >= 0) {
+          const uploaded = loadAdminPhotos();
+          uploaded.splice(Math.min(position, uploaded.length), 0, photo);
+          saveAdminPhotos(uploaded);
+        } else {
+          localStorage.setItem(HIDDEN_PHOTOS_KEY, JSON.stringify(loadHiddenPhotos().filter(id => id !== photoId(photo))));
+        }
+      } catch { notifyAdmin('admin_save_error', true); return; }
+      lastDeleted = null;
+      rebuild();
+      renderAdminList();
+      adminStatus.textContent = '';
+      [...adminList.querySelectorAll('[data-del]')].find(btn => btn.dataset.del === photoId(photo))?.focus();
+    });
+
+    adminModal.addEventListener('keydown', e => {
+      if (e.key !== 'Tab') return;
+      const focusable = [...adminModal.querySelectorAll('button, input, select, [tabindex="0"]')]
+        .filter(el => !el.disabled && el.getClientRects().length);
+      const first = focusable[0], last = focusable[focusable.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
 
     /* ---------- secret entry: three quick clicks on the logo ---------- */

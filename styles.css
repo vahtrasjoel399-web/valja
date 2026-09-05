@@ -253,3 +253,25 @@
   #nav > .max-w-7xl { padding-inline: 14px; }
   #nav #logo { font-size: 17px; }
 }
+
+/* Photo manager: consistent cards and controls usable without hovering. */
+.admin-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-right: 40px; margin-bottom: 20px; }
+.admin-heading h3 { min-width: 0; line-height: 1.2; }
+#adminLogout { flex-shrink: 0; }
+.admin-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.admin-photo { min-width: 0; overflow: hidden; border: 1px solid #E6E2DA; border-radius: 8px; background: #fff; }
+.admin-photo > img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.admin-photo-info { padding: 10px; }
+.admin-photo-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 13px; font-weight: 600; }
+.admin-photo-category { margin: 4px 0 8px; font-size: 12px; color: #6A655D; }
+.admin-delete, .admin-undo { min-height: 44px; padding: 8px 12px; border: 1px solid currentColor; border-radius: 8px; font-size: 13px; cursor: pointer; }
+.admin-delete { width: 100%; color: #A3342B; background: #fff; }
+.admin-delete:hover { background: #FFF1EF; }
+.admin-undo { color: #514537; }
+.admin-feedback { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 20px; }
+#adminModal button:focus-visible { outline: 2px solid #A3342B; outline-offset: 3px; }
+#adminModal button:disabled { opacity: .6; cursor: wait; }
+@media (max-width: 520px) {
+  .admin-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .admin-heading { align-items: flex-start; flex-direction: column; }
+}

@@ -497,24 +497,24 @@
   </div>
 
   <!-- ============ ADMIN MODAL ============ -->
-  <div id="adminModal" class="fixed inset-0 z-[70] hidden items-center justify-center bg-black/70 p-4" role="dialog" aria-modal="true">
-    <div class="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-lg bg-surface p-6 sm:p-8 shadow-2xl">
+  <div id="adminModal" aria-label="Управление фотографиями" data-i18n-aria="admin_panel_title" class="fixed inset-0 z-[70] hidden items-center justify-center bg-black/70 p-4" role="dialog" aria-modal="true">
+    <div class="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-lg bg-surface p-6 sm:p-8 shadow-2xl">
       <button id="adminClose" class="absolute top-4 right-4 flex h-9 w-9 items-center justify-center rounded-full hover:bg-sand transition-colors cursor-pointer" aria-label="Закрыть">
         <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></svg>
       </button>
 
       <!-- Login view -->
       <div id="adminLogin">
-        <h3 class="font-serif text-2xl tracking-tightest mb-1" data-i18n="admin_login_title">Вход в админ-панель</h3>
+        <h3 class="font-serif text-2xl tracking-tightest mb-1 pr-10" data-i18n="admin_login_title">Вход в админ-панель</h3>
         <p class="text-[13px] text-faint mb-6" data-i18n="admin_login_sub">Введите имя пользователя и пароль</p>
         <form id="adminLoginForm" class="space-y-4">
           <div>
             <label for="adminUser" class="block text-[13px] font-medium text-soft mb-1.5" data-i18n="admin_user_label">Имя пользователя</label>
-            <input id="adminUser" type="text" autocomplete="username" class="w-full rounded-sm border border-line bg-bg px-4 py-3 text-sm text-ink focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition" />
+            <input id="adminUser" type="text" required autocomplete="username" class="w-full rounded-sm border border-line bg-bg px-4 py-3 text-sm text-ink focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition" />
           </div>
           <div>
             <label for="adminPass" class="block text-[13px] font-medium text-soft mb-1.5" data-i18n="admin_pass_label">Пароль</label>
-            <input id="adminPass" type="password" autocomplete="current-password" class="w-full rounded-sm border border-line bg-bg px-4 py-3 text-sm text-ink focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition" />
+            <input id="adminPass" type="password" required autocomplete="current-password" class="w-full rounded-sm border border-line bg-bg px-4 py-3 text-sm text-ink focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition" />
           </div>
           <p id="adminError" class="hidden text-[13px] text-red-600" data-i18n="admin_error">Неверное имя пользователя или пароль</p>
           <button type="submit" class="w-full rounded-full bg-accent py-3 text-sm font-medium text-white hover:bg-accentDeep transition-colors cursor-pointer" data-i18n="admin_login_btn">Войти</button>
@@ -523,11 +523,12 @@
 
       <!-- Panel view -->
       <div id="adminPanel" class="hidden">
-        <div class="flex items-center justify-between mb-6">
+        <div class="admin-heading">
           <h3 class="font-serif text-2xl tracking-tightest" data-i18n="admin_panel_title">Управление фотографиями</h3>
           <button id="adminLogout" class="rounded-full border border-line px-3 py-1.5 text-[12px] font-medium text-soft hover:border-ink hover:text-ink transition-colors cursor-pointer" data-i18n="admin_logout">Выйти</button>
         </div>
 
+        <p class="text-[13px] text-soft mb-5" data-i18n="admin_local_note">Изменения видны только в этом браузере.</p>
         <form id="adminAddForm" class="space-y-4 border-b border-line pb-6 mb-6">
           <div class="grid sm:grid-cols-2 gap-4">
             <div>
@@ -543,6 +544,8 @@
               <label for="adminRatio" class="block text-[13px] font-medium text-soft mb-1.5" data-i18n="admin_ratio_label">Формат</label>
               <select id="adminRatio" class="w-full rounded-sm border border-line bg-bg px-4 py-3 text-sm text-ink focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition cursor-pointer">
                 <option value="3/4">3 / 4</option>
+                <option value="2/3">2 / 3</option>
+                <option value="3/2">3 / 2</option>
                 <option value="4/5">4 / 5</option>
                 <option value="1/1">1 / 1</option>
               </select>
@@ -550,18 +553,22 @@
           </div>
           <div>
             <label for="adminTitle" class="block text-[13px] font-medium text-soft mb-1.5" data-i18n="admin_title_label">Подпись</label>
-            <input id="adminTitle" type="text" class="w-full rounded-sm border border-line bg-bg px-4 py-3 text-sm text-ink focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition" />
+            <input id="adminTitle" type="text" maxlength="160" class="w-full rounded-sm border border-line bg-bg px-4 py-3 text-sm text-ink focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition" />
           </div>
           <div>
             <label for="adminFile" class="block text-[13px] font-medium text-soft mb-1.5" data-i18n="admin_file_label">Файл фотографии</label>
-            <input id="adminFile" type="file" accept="image/*" class="w-full text-sm text-soft file:mr-4 file:rounded-full file:border-0 file:bg-ink file:px-4 file:py-2 file:text-white file:cursor-pointer" />
+            <input id="adminFile" type="file" required accept="image/jpeg,image/png,image/webp,image/gif,image/avif" class="w-full text-sm text-soft file:mr-4 file:rounded-full file:border-0 file:bg-ink file:px-4 file:py-2 file:text-white file:cursor-pointer" />
           </div>
           <button type="submit" class="w-full rounded-full bg-accent py-3 text-sm font-medium text-white hover:bg-accentDeep transition-colors cursor-pointer" data-i18n="admin_add_btn">Добавить фото</button>
         </form>
 
-        <h4 class="text-[13px] font-semibold uppercase tracking-wide text-faint mb-3" data-i18n="admin_existing">Добавленные фото</h4>
-        <div id="adminList" class="grid grid-cols-3 gap-3"></div>
-        <p id="adminEmpty" class="text-[13px] text-faint" data-i18n="admin_empty">Пока нет добавленных фото</p>
+        <div class="admin-feedback">
+          <p id="adminStatus" role="status" aria-live="polite" class="text-[13px] text-soft"></p>
+          <button id="adminUndo" type="button" class="hidden admin-undo" data-i18n="admin_undo">Отменить удаление</button>
+        </div>
+        <h4 class="text-[13px] font-semibold uppercase tracking-wide text-faint mb-3"><span data-i18n="admin_existing">Все фотографии</span> · <span id="adminCount">0</span></h4>
+        <div id="adminList" class="admin-grid"></div>
+        <p id="adminEmpty" class="text-[13px] text-faint" data-i18n="admin_empty">В галерее пока нет фотографий</p>
       </div>
     </div>
   </div>

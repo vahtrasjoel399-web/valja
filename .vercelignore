@@ -1,13 +1,12 @@
-# Публикуется только сам статический сайт (index.html + styles.css + script.js + rig.js).
-# Всё остальное — заготовка под будущий Next.js-бэкенд, её незачем отдавать браузеру.
+# Static assets are built into public; api/ contains Vercel Functions.
 node_modules
 src
 .vscode
-.env.example
+.env*
 README.md
-package.json
-package-lock.json
 tsconfig.json
 tailwind.config.ts
 next.config.mjs
 postcss.config.mjs
+tests
+public

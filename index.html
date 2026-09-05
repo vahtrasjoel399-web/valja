@@ -146,6 +146,10 @@
       </div>
 
       <!-- Gallery -->
+      <div id="galleryState" class="text-sm text-soft mb-6" role="status">
+        <span id="galleryMessage" data-i18n="gallery_loading">Загружаем фотографии…</span>
+        <button id="galleryRetry" type="button" class="hidden underline ml-3" data-i18n="gallery_retry">Повторить</button>
+      </div>
       <div id="gallery" class="masonry">
         <!-- items injected by JS -->
       </div>
@@ -528,39 +532,7 @@
           <button id="adminLogout" class="rounded-full border border-line px-3 py-1.5 text-[12px] font-medium text-soft hover:border-ink hover:text-ink transition-colors cursor-pointer" data-i18n="admin_logout">Выйти</button>
         </div>
 
-        <p class="text-[13px] text-soft mb-5" data-i18n="admin_local_note">Изменения видны только в этом браузере.</p>
-        <form id="adminAddForm" class="space-y-4 border-b border-line pb-6 mb-6">
-          <div class="grid sm:grid-cols-2 gap-4">
-            <div>
-              <label for="adminCat" class="block text-[13px] font-medium text-soft mb-1.5" data-i18n="admin_cat_label">Раздел</label>
-              <select id="adminCat" class="w-full rounded-sm border border-line bg-bg px-4 py-3 text-sm text-ink focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition cursor-pointer">
-                <option value="portrait" data-i18n="filter_portrait">Портреты</option>
-                <option value="couple" data-i18n="filter_couple">Пары</option>
-                <option value="wedding" data-i18n="filter_wedding">Свадьбы</option>
-                <option value="family" data-i18n="filter_family">Семейные</option>
-              </select>
-            </div>
-            <div>
-              <label for="adminRatio" class="block text-[13px] font-medium text-soft mb-1.5" data-i18n="admin_ratio_label">Формат</label>
-              <select id="adminRatio" class="w-full rounded-sm border border-line bg-bg px-4 py-3 text-sm text-ink focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition cursor-pointer">
-                <option value="3/4">3 / 4</option>
-                <option value="2/3">2 / 3</option>
-                <option value="3/2">3 / 2</option>
-                <option value="4/5">4 / 5</option>
-                <option value="1/1">1 / 1</option>
-              </select>
-            </div>
-          </div>
-          <div>
-            <label for="adminTitle" class="block text-[13px] font-medium text-soft mb-1.5" data-i18n="admin_title_label">Подпись</label>
-            <input id="adminTitle" type="text" maxlength="160" class="w-full rounded-sm border border-line bg-bg px-4 py-3 text-sm text-ink focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition" />
-          </div>
-          <div>
-            <label for="adminFile" class="block text-[13px] font-medium text-soft mb-1.5" data-i18n="admin_file_label">Файл фотографии</label>
-            <input id="adminFile" type="file" required accept="image/jpeg,image/png,image/webp,image/gif,image/avif" class="w-full text-sm text-soft file:mr-4 file:rounded-full file:border-0 file:bg-ink file:px-4 file:py-2 file:text-white file:cursor-pointer" />
-          </div>
-          <button type="submit" class="w-full rounded-full bg-accent py-3 text-sm font-medium text-white hover:bg-accentDeep transition-colors cursor-pointer" data-i18n="admin_add_btn">Добавить фото</button>
-        </form>
+        <p class="text-[13px] text-soft mb-5" data-i18n="admin_local_note">Фото с пометкой «На сайте» удаляются для всех посетителей. Локально добавленные фото видны только в этом браузере.</p>
 
         <div class="admin-feedback">
           <p id="adminStatus" role="status" aria-live="polite" class="text-[13px] text-soft"></p>
@@ -569,6 +541,41 @@
         <h4 class="text-[13px] font-semibold uppercase tracking-wide text-faint mb-3"><span data-i18n="admin_existing">Все фотографии</span> · <span id="adminCount">0</span></h4>
         <div id="adminList" class="admin-grid"></div>
         <p id="adminEmpty" class="text-[13px] text-faint" data-i18n="admin_empty">В галерее пока нет фотографий</p>
+        <details class="mt-6 border-t border-line pt-4">
+          <summary class="cursor-pointer text-sm font-medium" data-i18n="admin_local_upload">Добавить локальное фото</summary>
+          <form id="adminAddForm" class="space-y-4 mt-4">
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div>
+                <label for="adminCat" class="block text-[13px] font-medium text-soft mb-1.5" data-i18n="admin_cat_label">Раздел</label>
+                <select id="adminCat" class="w-full rounded-sm border border-line bg-bg px-4 py-3 text-sm text-ink focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition cursor-pointer">
+                  <option value="portrait" data-i18n="filter_portrait">Портреты</option>
+                  <option value="couple" data-i18n="filter_couple">Пары</option>
+                  <option value="wedding" data-i18n="filter_wedding">Свадьбы</option>
+                  <option value="family" data-i18n="filter_family">Семейные</option>
+                </select>
+              </div>
+              <div>
+                <label for="adminRatio" class="block text-[13px] font-medium text-soft mb-1.5" data-i18n="admin_ratio_label">Формат</label>
+                <select id="adminRatio" class="w-full rounded-sm border border-line bg-bg px-4 py-3 text-sm text-ink focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition cursor-pointer">
+                  <option value="3/4">3 / 4</option>
+                  <option value="2/3">2 / 3</option>
+                  <option value="3/2">3 / 2</option>
+                  <option value="4/5">4 / 5</option>
+                  <option value="1/1">1 / 1</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label for="adminTitle" class="block text-[13px] font-medium text-soft mb-1.5" data-i18n="admin_title_label">Подпись</label>
+              <input id="adminTitle" type="text" maxlength="160" class="w-full rounded-sm border border-line bg-bg px-4 py-3 text-sm text-ink focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/20 transition" />
+            </div>
+            <div>
+              <label for="adminFile" class="block text-[13px] font-medium text-soft mb-1.5" data-i18n="admin_file_label">Файл фотографии</label>
+              <input id="adminFile" type="file" required accept="image/jpeg,image/png,image/webp,image/gif,image/avif" class="w-full text-sm text-soft file:mr-4 file:rounded-full file:border-0 file:bg-ink file:px-4 file:py-2 file:text-white file:cursor-pointer" />
+            </div>
+            <button type="submit" class="w-full rounded-full bg-accent py-3 text-sm font-medium text-white hover:bg-accentDeep transition-colors cursor-pointer" data-i18n="admin_add_btn">Добавить фото</button>
+          </form>
+        </details>
       </div>
     </div>
   </div>

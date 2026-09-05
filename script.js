@@ -85,19 +85,34 @@
     const sizeOf = r => (r === '1/1' ? [700, 700] : r === '4/5' ? [700, 875] : [700, 933]);
     const srcOf = it => it.url;
 
-    // This static site's photo edits are stored in this browser only.
+    // Existing portfolio photos use shared server state; local uploads remain previews.
     const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, char =>
       ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
     const photoId = photo => photo.id || photo.url;
-    const HIDDEN_PHOTOS_KEY = 'val_hidden_photos';
-    function loadHiddenPhotos() {
+    let hiddenPhotos = [];
+    let galleryReady = false;
+    let serverConfigured = false;
+    let authenticated = false;
+    let adminBusy = false;
+    let refreshing = false;
+    let stateEpoch = 0;
+    async function portfolioRequest(body) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 12000);
       try {
-        const saved = JSON.parse(localStorage.getItem(HIDDEN_PHOTOS_KEY));
-        return Array.isArray(saved) ? saved.filter(id => typeof id === 'string') : [];
-      } catch { return []; }
+        const response = await fetch('/api/portfolio', {
+          method: body ? 'POST' : 'GET', credentials: 'same-origin', cache: 'no-store',
+          signal: controller.signal,
+          ...(body ? { headers: { 'Content-Type': 'application/json', 'X-Photo-Admin': '1' }, body: JSON.stringify(body) } : {})
+        });
+        let result;
+        try { result = await response.json(); } catch { throw new Error('unavailable'); }
+        if (!response.ok) throw new Error(result.error || 'unavailable');
+        return result;
+      } finally { clearTimeout(timeout); }
     }
     function loadVisiblePhotos() {
-      const hidden = new Set(loadHiddenPhotos());
+      const hidden = new Set(hiddenPhotos);
       return items.filter(photo => !hidden.has(photoId(photo))).concat(loadAdminPhotos());
     }
     const ADMIN_PHOTOS_KEY = 'val_admin_photos';
@@ -113,11 +128,12 @@
       catch (e) { return []; }
     }
     function saveAdminPhotos(list) { localStorage.setItem(ADMIN_PHOTOS_KEY, JSON.stringify(list)); }
-    let allItems = loadVisiblePhotos();
+    let allItems = [];
     let activeFilter = 'all';
     let visibleAllCount = ALL_PAGE_SIZE;
     function rebuild() { allItems = loadVisiblePhotos(); applyFilter(); }
     function applyFilter() {
+      if (!galleryReady) { render([]); loadMore.classList.add('hidden'); return; }
       const filtered = activeFilter === 'all' ? allItems : allItems.filter(it => it.cat === activeFilter);
       current = activeFilter === 'all' ? filtered.slice(0, visibleAllCount) : filtered.slice();
       render(current);
@@ -352,7 +368,19 @@
         admin_adding: 'Добавляем…',
         admin_added: 'Фото добавлено.',
         admin_read_error: 'Не удалось прочитать изображение.',
-        admin_local_note: 'Изменения видны только в этом браузере.'
+        admin_local_note: 'Фото с пометкой «На сайте» удаляются для всех посетителей. Локально добавленные фото видны только в этом браузере.',
+        admin_setup: 'Удаление на сайте ещё не настроено. Подключите базу данных и задайте ADMIN_USER, ADMIN_PASSWORD и SESSION_SECRET в Vercel.',
+        admin_rate: 'Слишком много попыток. Попробуйте через 15 минут.',
+        admin_session: 'Сессия истекла. Войдите снова.',
+        admin_conflict: 'Фото уже изменено в другой сессии. Обновите список.',
+        admin_network_error: 'Не удалось связаться с сервером. Изменение не подтверждено; обновите страницу перед повторной попыткой.',
+        admin_deleted_shared: 'Фото удалено с сайта для всех посетителей.',
+        admin_site_photo: 'На сайте',
+        admin_local_photo: 'Локально',
+        admin_local_upload: 'Добавить локальное фото',
+        gallery_loading: 'Загружаем фотографии…',
+        gallery_error: 'Не удалось загрузить фотографии.',
+        gallery_retry: 'Повторить'
       },
       et: {
         __doc: 'Valentina Šestero — fotograaf',
@@ -412,7 +440,19 @@
         admin_adding: 'Lisamine…',
         admin_added: 'Foto lisatud.',
         admin_read_error: 'Pilti ei saanud lugeda.',
-        admin_local_note: 'Muudatused on nähtavad ainult selles brauseris.'
+        admin_local_note: 'Märkega „Veebilehel” fotod kustutatakse kõigi külastajate jaoks. Kohalikult lisatud fotosid näete ainult selles brauseris.',
+        admin_setup: 'Kustutamine pole veel seadistatud. Ühendage andmebaas ning määrake Vercelis ADMIN_USER, ADMIN_PASSWORD ja SESSION_SECRET.',
+        admin_rate: 'Liiga palju katseid. Proovige 15 minuti pärast uuesti.',
+        admin_session: 'Seanss on aegunud. Logige uuesti sisse.',
+        admin_conflict: 'Fotot on teises seansis muudetud. Värskendage loendit.',
+        admin_network_error: 'Serveriga ei saanud ühendust. Muudatus pole kinnitatud; värskendage lehte enne uuesti proovimist.',
+        admin_deleted_shared: 'Foto kustutatud veebilehelt kõigi külastajate jaoks.',
+        admin_site_photo: 'Veebilehel',
+        admin_local_photo: 'Kohalik',
+        admin_local_upload: 'Lisa kohalik foto',
+        gallery_loading: 'Fotode laadimine…',
+        gallery_error: 'Fotosid ei saanud laadida.',
+        gallery_retry: 'Proovi uuesti'
       },
       en: {
         __doc: 'Valentina Šestero — photographer',
@@ -472,7 +512,19 @@
         admin_adding: 'Adding…',
         admin_added: 'Photo added.',
         admin_read_error: 'Could not read the image.',
-        admin_local_note: 'Changes are visible only in this browser.'
+        admin_local_note: 'Photos marked “On site” are removed for all visitors. Locally added photos are visible only in this browser.',
+        admin_setup: 'Site deletion is not configured yet. Connect a database and set ADMIN_USER, ADMIN_PASSWORD and SESSION_SECRET in Vercel.',
+        admin_rate: 'Too many attempts. Try again in 15 minutes.',
+        admin_session: 'Your session expired. Please log in again.',
+        admin_conflict: 'This photo changed in another session. Refresh the list.',
+        admin_network_error: 'Could not reach the server. The change is unconfirmed; refresh the page before trying again.',
+        admin_deleted_shared: 'Photo removed from the site for all visitors.',
+        admin_site_photo: 'On site',
+        admin_local_photo: 'Local',
+        admin_local_upload: 'Add a local photo',
+        gallery_loading: 'Loading photos…',
+        gallery_error: 'Could not load photos.',
+        gallery_retry: 'Retry'
       }
     };
 
@@ -540,10 +592,8 @@
     privacyModal.addEventListener('click', e => { if (e.target === privacyModal) closePrivacy(); });
 
     /* ============================================================
-       ADMIN PANEL  (client-side only — credentials are not secret)
+       ADMIN PANEL — server authentication and shared portfolio deletion
     ============================================================ */
-    const ADMIN_USER = 'admin';
-    const ADMIN_PASS = 'valentina';
     const adminModal = document.getElementById('adminModal');
     const adminLogin = document.getElementById('adminLogin');
     const adminPanel = document.getElementById('adminPanel');
@@ -560,7 +610,40 @@
       adminStatus.classList.toggle('text-red-600', error);
     }
 
-    function isAuthed() { return sessionStorage.getItem('val_admin_auth') === '1'; }
+    function isAuthed() { return authenticated; }
+    function adminFailure(error) {
+      const keys = { setup: 'admin_setup', credentials: 'admin_error', rate: 'admin_rate', session: 'admin_session', conflict: 'admin_conflict' };
+      return keys[error.message] || 'admin_network_error';
+    }
+    function setAdminBusy(busy) {
+      adminBusy = busy;
+      if (busy) stateEpoch++;
+      adminPanel.querySelectorAll('button, input, select').forEach(el => { el.disabled = busy; });
+    }
+    async function refreshPortfolio() {
+      if (refreshing || adminBusy) return;
+      refreshing = true;
+      const epoch = stateEpoch;
+      try {
+        const state = await portfolioRequest();
+        if (epoch !== stateEpoch || adminBusy) return;
+        if (!Array.isArray(state.hidden)) throw new Error('unavailable');
+        serverConfigured = state.configured === true;
+        authenticated = state.authenticated === true;
+        hiddenPhotos = state.hidden;
+        galleryReady = true;
+        rebuild();
+        // Close a lightbox whose current photo may have disappeared.
+        if (!lb.classList.contains('hidden')) close();
+        document.getElementById('galleryState').classList.add('hidden');
+        if (!adminModal.classList.contains('hidden')) showAdminView();
+      } catch {
+        if (!galleryReady) {
+          document.getElementById('galleryMessage').textContent = adminText('gallery_error');
+          document.getElementById('galleryRetry').classList.remove('hidden');
+        }
+      } finally { refreshing = false; }
+    }
     function renderAdminList() {
       const photos = loadVisiblePhotos();
       adminEmpty.style.display = photos.length ? 'none' : '';
@@ -569,7 +652,7 @@
           <img src="${escapeHtml(p.url)}" alt="${escapeHtml(p.title)}" loading="lazy" />
           <div class="admin-photo-info">
             <p class="admin-photo-title" title="${escapeHtml(p.title)}">${escapeHtml(p.title)}</p>
-            <p class="admin-photo-category">${escapeHtml(CATS[p.cat])}</p>
+            <p class="admin-photo-category">${escapeHtml(CATS[p.cat])} · ${adminText(p.id ? 'admin_local_photo' : 'admin_site_photo')}</p>
             <button type="button" data-del="${escapeHtml(photoId(p))}" class="admin-delete" aria-label="${escapeHtml(adminText('admin_delete') + ': ' + p.title)}">
               ${adminText('admin_delete')}
             </button>
@@ -580,38 +663,63 @@
     }
     function showAdminView() {
       if (isAuthed()) { adminLogin.classList.add('hidden'); adminPanel.classList.remove('hidden'); renderAdminList(); }
-      else { adminPanel.classList.add('hidden'); adminLogin.classList.remove('hidden'); }
+      else {
+        adminPanel.classList.add('hidden'); adminLogin.classList.remove('hidden');
+        if (!serverConfigured) {
+          adminError.textContent = adminText('admin_setup');
+          adminError.classList.remove('hidden');
+        }
+      }
     }
-    function openAdmin() { adminLastFocus = document.activeElement; adminModal.classList.remove('hidden'); adminModal.classList.add('flex'); document.body.style.overflow = 'hidden'; showAdminView(); document.getElementById(isAuthed() ? 'adminCat' : 'adminUser').focus(); }
+    function openAdmin() { adminLastFocus = document.activeElement; adminModal.classList.remove('hidden'); adminModal.classList.add('flex'); document.body.style.overflow = 'hidden'; showAdminView(); (isAuthed() ? adminList.querySelector('[data-del]') || document.getElementById('adminLogout') : document.getElementById('adminUser')).focus(); refreshPortfolio(); }
     function closeAdmin() { adminModal.classList.add('hidden'); adminModal.classList.remove('flex'); document.body.style.overflow = ''; if (adminLastFocus) adminLastFocus.focus(); }
 
     document.getElementById('adminClose').addEventListener('click', closeAdmin);
     adminModal.addEventListener('click', e => { if (e.target === adminModal) closeAdmin(); });
 
-    document.getElementById('adminLoginForm').addEventListener('submit', e => {
+    document.getElementById('adminLoginForm').addEventListener('submit', async e => {
       e.preventDefault();
-      const u = document.getElementById('adminUser').value.trim();
-      const p = document.getElementById('adminPass').value;
-      if (u === ADMIN_USER && p === ADMIN_PASS) {
-        sessionStorage.setItem('val_admin_auth', '1');
-        adminError.classList.add('hidden');
+      const button = e.target.querySelector('[type="submit"]');
+      if (button.disabled) return;
+      button.disabled = true;
+      stateEpoch++;
+      adminError.classList.add('hidden');
+      try {
+        const state = await portfolioRequest({ action: 'login',
+          username: document.getElementById('adminUser').value.trim(),
+          password: document.getElementById('adminPass').value });
+        authenticated = state.authenticated === true;
+        serverConfigured = true;
+        hiddenPhotos = state.hidden;
+        galleryReady = true;
+        rebuild();
+        document.getElementById('galleryState').classList.add('hidden');
         document.getElementById('adminPass').value = '';
         showAdminView();
-        document.getElementById('adminCat').focus();
-      } else {
+        (adminList.querySelector('[data-del]') || document.getElementById('adminLogout')).focus();
+      } catch (error) {
+        adminError.textContent = adminText(adminFailure(error));
         adminError.classList.remove('hidden');
-      }
+      } finally { button.disabled = false; }
     });
 
-    document.getElementById('adminLogout').addEventListener('click', () => {
-      sessionStorage.removeItem('val_admin_auth');
-      showAdminView();
-      document.getElementById('adminUser').focus();
+    document.getElementById('adminLogout').addEventListener('click', async () => {
+      if (adminBusy) return;
+      setAdminBusy(true);
+      try {
+        await portfolioRequest({ action: 'logout' });
+        authenticated = false;
+        lastDeleted = null;
+        adminStatus.textContent = '';
+        showAdminView();
+        document.getElementById('adminUser').focus();
+      } catch (error) { notifyAdmin(adminFailure(error), true); }
+      finally { setAdminBusy(false); }
     });
 
     document.getElementById('adminAddForm').addEventListener('submit', e => {
       e.preventDefault();
-      if (!isAuthed()) return;
+      if (!isAuthed() || adminBusy) return;
       const form = e.target;
       const file = document.getElementById('adminFile').files[0];
       if (!file || !/^image\/(jpeg|png|webp|gif|avif)$/i.test(file.type)) {
@@ -626,9 +734,9 @@
       };
       const submit = form.querySelector('[type="submit"]');
       if (submit.disabled) return;
-      submit.disabled = true;
+      setAdminBusy(true);
       submit.textContent = adminText('admin_adding');
-      const finish = () => { submit.disabled = false; submit.textContent = adminText('admin_add_btn'); };
+      const finish = () => { setAdminBusy(false); submit.textContent = adminText('admin_add_btn'); };
       const reader = new FileReader();
       reader.onload = () => {
         if (!isAuthed()) { finish(); return; }
@@ -650,55 +758,72 @@
       reader.readAsDataURL(file);
     });
 
-    adminList.addEventListener('click', e => {
+    adminList.addEventListener('click', async e => {
       const btn = e.target.closest('[data-del]');
-      if (!btn || !isAuthed()) return;
+      if (!btn || !isAuthed() || adminBusy) return;
       const id = btn.dataset.del;
       const photo = loadVisiblePhotos().find(p => photoId(p) === id);
       if (!photo) return;
       const uploaded = loadAdminPhotos();
       const position = uploaded.findIndex(p => photoId(p) === id);
-      const buttons = [...adminList.querySelectorAll('[data-del]')];
-      const focusIndex = buttons.indexOf(btn);
+      const focusIndex = [...adminList.querySelectorAll('[data-del]')].indexOf(btn);
+      setAdminBusy(true);
+      let revision;
       try {
         if (position >= 0) saveAdminPhotos(uploaded.filter(p => photoId(p) !== id));
-        else localStorage.setItem(HIDDEN_PHOTOS_KEY, JSON.stringify([...new Set([...loadHiddenPhotos(), id])]));
-      } catch { notifyAdmin('admin_save_error', true); return; }
-      lastDeleted = { photo, position };
-      rebuild();
-      renderAdminList();
-      notifyAdmin('admin_deleted');
+        else {
+          const result = await portfolioRequest({ action: 'delete', id });
+          revision = result.revision;
+          hiddenPhotos = [...new Set([...hiddenPhotos, id])];
+        }
+        lastDeleted = { photo, position, revision };
+        rebuild();
+        renderAdminList();
+        notifyAdmin(position >= 0 ? 'admin_deleted' : 'admin_deleted_shared');
+      } catch (error) {
+        notifyAdmin(position >= 0 ? 'admin_save_error' : adminFailure(error), true);
+        if (error.message === 'session') { authenticated = false; showAdminView(); adminError.textContent = adminText('admin_session'); adminError.classList.remove('hidden'); }
+      } finally { setAdminBusy(false); }
       const remaining = adminList.querySelectorAll('[data-del]');
       (remaining[Math.min(focusIndex, remaining.length - 1)] || adminUndo).focus();
     });
 
-    adminUndo.addEventListener('click', () => {
-      if (!lastDeleted || !isAuthed()) return;
-      const { photo, position } = lastDeleted;
+    adminUndo.addEventListener('click', async () => {
+      if (!lastDeleted || !isAuthed() || adminBusy) return;
+      const { photo, position, revision } = lastDeleted;
+      setAdminBusy(true);
       try {
         if (position >= 0) {
           const uploaded = loadAdminPhotos();
           uploaded.splice(Math.min(position, uploaded.length), 0, photo);
           saveAdminPhotos(uploaded);
         } else {
-          localStorage.setItem(HIDDEN_PHOTOS_KEY, JSON.stringify(loadHiddenPhotos().filter(id => id !== photoId(photo))));
+          await portfolioRequest({ action: 'restore', id: photoId(photo), revision });
+          hiddenPhotos = hiddenPhotos.filter(id => id !== photoId(photo));
         }
-      } catch { notifyAdmin('admin_save_error', true); return; }
-      lastDeleted = null;
-      rebuild();
-      renderAdminList();
-      adminStatus.textContent = '';
+        lastDeleted = null;
+        rebuild();
+        renderAdminList();
+        adminStatus.textContent = '';
+      } catch (error) {
+        notifyAdmin(position >= 0 ? 'admin_save_error' : adminFailure(error), true);
+        if (error.message === 'session') { authenticated = false; showAdminView(); adminError.textContent = adminText('admin_session'); adminError.classList.remove('hidden'); }
+      } finally { setAdminBusy(false); }
       [...adminList.querySelectorAll('[data-del]')].find(btn => btn.dataset.del === photoId(photo))?.focus();
     });
 
     adminModal.addEventListener('keydown', e => {
       if (e.key !== 'Tab') return;
-      const focusable = [...adminModal.querySelectorAll('button, input, select, [tabindex="0"]')]
+      const focusable = [...adminModal.querySelectorAll('button, input, select, summary, [tabindex="0"]')]
         .filter(el => !el.disabled && el.getClientRects().length);
       const first = focusable[0], last = focusable[focusable.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
+
+    document.getElementById('galleryRetry').addEventListener('click', refreshPortfolio);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) refreshPortfolio(); });
+    refreshPortfolio();
 
     /* ---------- secret entry: three quick clicks on the logo ---------- */
     const logo = document.getElementById('logo');

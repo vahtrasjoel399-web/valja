@@ -6,10 +6,14 @@ const root = path.resolve(__dirname, '..');
 (async () => {
   const output = path.join(root, 'assets/camera');
   fs.mkdirSync(output, { recursive: true });
-  for (let i = 0; i < 48; i++) {
-    const name = `r7_${String(i).padStart(4, '0')}`;
-    await sharp(path.join(root, 'blender/web-frames', name + '.png'))
-      .webp({ quality: 82, alphaQuality: 90, effort: 5 })
+  for (let i = 0; i < 80; i++) {
+    const name = `r8_${String(i).padStart(4, '0')}`;
+    const input = path.join(root, 'blender/r8-web-frames', name + '.png');
+    await sharp(input)
+      .webp({ quality: 90, alphaQuality: 100, effort: 5 })
       .toFile(path.join(output, name + '.webp'));
+    await sharp(input).resize(640)
+      .webp({ quality: 87, alphaQuality: 100, effort: 5 })
+      .toFile(path.join(output, name.replace('r8_', 'r8-mobile_') + '.webp'));
   }
 })().catch(error => { console.error(error); process.exitCode = 1; });

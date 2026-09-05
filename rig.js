@@ -11,8 +11,9 @@
     const ctx = canvas.getContext('2d');
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const FRAME_COUNT = 48;
-    const POSTER = 26;
+    const FRAME_COUNT = 80;
+    const POSTER = 62;
+    const framePrefix = window.innerWidth < 640 ? 'r8-mobile' : 'r8';
     const images = new Array(FRAME_COUNT);
     const requested = new Set();
     let activeLoads = 0, loadingStarted = false, wantedFrame = POSTER;
@@ -21,8 +22,16 @@
     // Only three requests at once; prioritise the frame nearest the scroll position.
     function pumpFrames() {
       if (!loadingStarted) return;
+      // Keep a small decoded window, not the entire high-resolution sequence.
+      for (let i = 0; i < FRAME_COUNT; i++) {
+        if (images[i] && i !== POSTER && Math.abs(i - wantedFrame) > 10) {
+          images[i] = undefined;
+          requested.delete(i);
+        }
+      }
       const order = reduce ? [POSTER] : [wantedFrame, POSTER,
         ...Array.from({ length: FRAME_COUNT }, (_, i) => i)
+          .filter(i => Math.abs(i - wantedFrame) <= 6)
           .sort((a, b) => Math.abs(a - wantedFrame) - Math.abs(b - wantedFrame))];
       for (const i of order) {
         if (activeLoads >= 3) break;
@@ -38,7 +47,7 @@
           pumpFrames();
         };
         im.onerror = () => { activeLoads--; pumpFrames(); };
-        im.src = `assets/camera/r7_${String(i).padStart(4, '0')}.webp`;
+        im.src = `assets/camera/${framePrefix}_${String(i).padStart(4, '0')}.webp`;
       }
     }
 
@@ -49,6 +58,7 @@
       size = Math.round(Math.min(window.innerWidth * 0.92, window.innerHeight * 0.78, 760));
       canvas.style.width = size + 'px';
       canvas.style.height = size + 'px';
+      canvas.style.top = '-24px';
       canvas.width = size * dpr;
       canvas.height = size * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -61,7 +71,11 @@
     const seg = (p, a, b) => clamp((p - a) / (b - a), 0, 1);
 
     function drawImages(p) {
-      wantedFrame = reduce ? POSTER : clamp(Math.round(clamp(p / 0.80, 0, 1) * (FRAME_COUNT - 1)), 0, FRAME_COUNT - 1);
+      const nextFrame = reduce ? POSTER : clamp(Math.round(clamp(p / 0.80, 0, 1) * (FRAME_COUNT - 1)), 0, FRAME_COUNT - 1);
+      if (nextFrame !== wantedFrame) {
+        wantedFrame = nextFrame;
+        pumpFrames();
+      }
       // Keep the closest available rendered frame while the desired one loads.
       let idx = -1;
       for (let i = 0; i < FRAME_COUNT; i++) {
@@ -102,9 +116,9 @@
       return clamp(-section.getBoundingClientRect().top / total, 0, 1);
     }
 
-    /* ---------- render loop (only while section is near viewport) ---------- */
-    let running = false, rafId = 0;
-    function frame(now) {
+    /* ---------- render on scroll (only near the viewport) ---------- */
+    let running = false;
+    function frame() {
       const p = progress();
       drawImages(p);
 
@@ -129,10 +143,12 @@
 
       updateCaps(p);
       if (bar) bar.style.height = (p * 100).toFixed(1) + '%';
-      if (running) rafId = requestAnimationFrame(frame);
     }
-    function start() { loadingStarted = true; pumpFrames(); if (!running) { running = true; rafId = requestAnimationFrame(frame); } }
-    function stop()  { running = false; cancelAnimationFrame(rafId); }
+    function requestRender() {
+      if (running) frame();
+    }
+    function start() { loadingStarted = true; pumpFrames(); running = true; requestRender(); }
+    function stop()  { running = false; }
 
     const io = new IntersectionObserver(
       es => es.forEach(e => (e.isIntersecting ? start() : stop())),
@@ -142,5 +158,6 @@
     resize();
     io.observe(section);
     frame(performance.now());        // paint once immediately
+    window.addEventListener('scroll', requestRender, { passive: true });
     window.addEventListener('resize', () => { resize(); frame(performance.now()); });
   })();

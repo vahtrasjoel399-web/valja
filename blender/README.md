@@ -1,28 +1,28 @@
-# Camera studio scene
+# Canon EOS R8 studio scene
 
-Open `canon-r7-studio.blend` in Blender. `camera-hero.png` is the checked studio render.
+Open `canon-r8-studio.blend`. The scene contains seven animated groups:
+body, viewfinder, LCD, RF bayonet, lens base, zoom mechanics and front optical cell.
+Frames 1–124 assemble the camera; 124–160 turn the completed camera.
 
-Editable EOS R7-inspired model with contoured housing, grip texture, rear LCD / EVF,
-controls, bayonet, ribbed zoom lens and studio lights. It is an artistic approximation,
-not a manufacturer CAD model. The representative 18–150 mm lens is an assumption;
-the photographer's actual lens has not been confirmed.
+This is an artistic approximation based on EOS R8 product photographs, not factory CAD.
+The lens is a representative RF zoom; the owner has not confirmed its model.
+R8 reference: https://www.photoxels.com/canon-adds-entry-level-r50-aps-c-and-r8-full-frame-mirrorless-cameras/
+R8 specifications: https://global.canon/en/c-museum/product/dslr907.html
 
-Timeline: 1–20 separated lens, 20–65 lens installation, 65–120 camera turn.
-Frame 65 is the assembled hero view. Body and lens have separate parent controls.
-Source photographs are packed into the hidden REFERENCES collection.
+## Rebuild
 
-Reference sources:
-- https://www.canon.com.br/para-voce/cameras/eos-mirrorless/eos-r7
-- https://thehomeground.asia/tech-gadgets/canon-eos-revolution-expands-into-aps-c-with-two-new-cameras-and-lenses/
+Run the installed Blender with `--background --python blender/create_r8.py`.
+Use `R8_SKIP_HERO=1` to skip the optional studio still.
+Then run Blender with `--background --python blender/render_r8_web.py`,
+followed by `node scripts/convert-camera.cjs` and `npm run build`.
+On supported Macs, `R8_GPU=1` enables Metal; `R8_RESUME=1` skips existing PNG frames.
+Use resume only when the scene and render settings have not changed.
 
-Rebuild with the installed Blender:
+Web output: 80 transparent 1100 px WebP frames, plus 640 px mobile versions.
+`R8_PREVIEW=1` renders only three reduced-resolution review frames.
+The browser loads a small window of neighbouring frames, with three requests at a time.
+Reduced motion loads only the assembled frame.
 
-```sh
-/Applications/Blender.app/Contents/MacOS/Blender --background --python blender/create_camera.py
-```
-
-The script builds a fresh scene in its own process. Rebuilding overwrites the generated
-blend and preview, so save manual edits under another filename first.
-The website uses 48 transparent WebP frames from this scene.
-Run `render_web.py` with Blender, then `node scripts/convert-camera.cjs`
-to regenerate `assets/camera/`. Rebuild the site after conversion.
+The source scripts rebuild separate scenes; manual edits should be saved under
+another filename before rebuilding. Generated Blender files and raw renders stay
+local and are excluded from deployment. Older R7 scripts are retained for reference.

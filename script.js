@@ -238,14 +238,12 @@
     /* ---------- Nav: bg on scroll + auto-hide ---------- */
     const nav = document.getElementById('nav');
     const scrollProgress = document.getElementById('scrollProgress');
-    const navMenu = document.getElementById('mobileMenu');
     const NAV_BG = ['bg-bg/90', 'backdrop-blur-md', 'border-b', 'border-line', 'shadow-[0_1px_0_rgba(0,0,0,0.02)]'];
     const NAV_HIDE_AFTER = 140;   /* не прячем, пока не отскроллили заметно */
     const NAV_PEEK_ZONE  = 80;    /* курсор в этой полосе сверху — шапка выезжает */
     let lastY = window.scrollY;
     let pointerAtTop = false;
 
-    const navMenuOpen = () => !navMenu.classList.contains('hidden');
     const showNav = () => nav.classList.remove('nav-hidden');
 
     const onScroll = () => {
@@ -257,7 +255,7 @@
       else nav.classList.remove(...NAV_BG);
 
       const goingDown = y > lastY;
-      if (goingDown && y > NAV_HIDE_AFTER && !pointerAtTop && !navMenuOpen()) nav.classList.add('nav-hidden');
+      if (goingDown && y > NAV_HIDE_AFTER && !pointerAtTop) nav.classList.add('nav-hidden');
       else if (!goingDown || y <= NAV_HIDE_AFTER) showNav();
 
       lastY = y;
@@ -267,24 +265,12 @@
 
     /* курсор идёт к верхней кромке — возвращаем шапку */
     window.addEventListener('pointermove', e => {
-      pointerAtTop = e.clientY <= NAV_PEEK_ZONE;
+      pointerAtTop = e.pointerType === 'mouse' && e.clientY <= NAV_PEEK_ZONE;
       if (pointerAtTop) showNav();
     }, { passive: true });
 
     /* клавиатурная навигация не должна упираться в скрытую шапку */
     nav.addEventListener('focusin', showNav);
-
-    /* ---------- Mobile menu ---------- */
-    const burger = document.getElementById('burger');
-    const menu = document.getElementById('mobileMenu');
-    burger.addEventListener('click', () => {
-      const open = menu.classList.toggle('hidden') === false;
-      burger.setAttribute('aria-expanded', String(open));
-      if (open) showNav();
-    });
-    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-      menu.classList.add('hidden'); burger.setAttribute('aria-expanded', 'false');
-    }));
 
     /* ============================================================
        INTERNATIONALISATION (RU default · ET · EN)
@@ -295,38 +281,37 @@
         __cats: { portrait: 'Портрет', couple: 'Пары', wedding: 'Свадьба', family: 'Семья', featured: 'Избранное' },
         nav_portfolio: 'Портфолио', nav_about: 'Обо мне', nav_prices: 'Цены',
         nav_book: 'Связаться', nav_book_full: 'Связаться', menu_open: 'Открыть меню',
-        hero_eyebrow: 'Фотограф · Эстония',
-        hero_title: 'Живые истории<br />в <em class="italic font-normal">тихом свете</em>',
-        hero_sub: 'Бережно снимаю портреты, пары, свадьбы и семьи — без напряжения, спешки и неестественных поз.',
+        hero_title: 'Вы, ваши близкие<br />и <em class="italic font-normal">любимые моменты</em>',
+        hero_sub: 'Снимаю портреты, пары, семьи и свадьбы. Если вы впервые на съёмке, подскажу, куда встать и что делать перед камерой.',
         hero_cta: 'Написать в Instagram', hero_cta2: 'Смотреть работы', hero_scroll: 'Листайте',
         trust_years: 'лет в фотографии', trust_shoots: 'съёмок', trust_memories: 'тёплых воспоминаний',
         portfolio_eyebrow: 'Портфолио', portfolio_title: 'Избранные работы',
-        portfolio_sub: 'Настоящие люди, близость и детали, которые хочется сохранить. Выберите историю, чтобы посмотреть фотографии.',
+        portfolio_sub: 'Здесь собраны фотографии с разных съёмок. Можно посмотреть всё или выбрать нужный раздел.',
         filter_all: 'Все', filter_portrait: 'Портреты', filter_couple: 'Пары', filter_wedding: 'Свадьбы', filter_family: 'Семейные', gallery_more: 'Показать больше',
-        rig_eyebrow1: 'Чем я снимаю', rig_title1: 'Каждый кадр<br />начинается здесь',
-        rig_sub1: 'Прокрутите вниз — камера соберётся по деталям',
-        rig_sub3: 'Мой основной инструмент для портретов и репортажа', rig_cta: 'Смотреть фотографии',
-        about_eyebrow: 'Обо мне', about_title: 'Сохраняю то,<br />что чувствуете вы', about_photo_placeholder: 'Здесь будет портрет Валентины',
-        about_p1: 'Меня зовут Валентина. Я снимаю людей и их близкие истории — бережно, спокойно и без лишней постановки.',
-        about_p2: 'На съёмке не нужно уметь позировать. Мы знакомимся, разговариваем и двигаемся в удобном для вас темпе. Я мягко подсказываю, а вы можете просто быть собой.',
-        about_f1: 'Естественный свет', about_f2: 'Деликатная ретушь', about_f3: 'Мягко направляю в кадре', about_f4: 'Срок отдачи 7–14 дней',
+        rig_eyebrow1: 'Чем я снимаю', rig_title1: 'Моя камера',
+        rig_sub1: 'Листайте вниз, чтобы рассмотреть её поближе.',
+        rig_sub3: 'На неё я снимаю портреты, семьи и свадьбы.', rig_cta: 'Смотреть фотографии',
+        about_eyebrow: 'Обо мне', about_title: 'Привет,<br />я Валентина', about_photo_placeholder: 'Здесь будет портрет Валентины',
+        about_p1: 'Я фотографирую людей: по одному, вдвоём, всей семьёй. Снимаю свадьбы и обычные встречи, когда просто хочется новых фотографий.',
+        about_p2: 'Если перед камерой неловко — это нормально. Сначала познакомимся и немного поговорим. На съёмке я подскажу, как встать, куда посмотреть и чем занять руки.',
+        about_f1: 'Естественный свет', about_f2: 'Аккуратная ретушь', about_f3: 'Помогу с позированием', about_f4: 'Готовые фото за 7–14 дней',
         about_cta: 'Связаться со мной', about_badge_hi: 'Привет', about_badge_txt: 'Я Валентина — и я люблю живые фотографии.',
-        prices_eyebrow: 'Услуги и цены', prices_title: 'Форматы съёмки',
-        prices_sub: 'Выберите подходящий формат съёмки. Детали и свободные даты можно обсудить в Instagram.',
+        prices_eyebrow: 'Услуги и цены', prices_title: 'Съёмки и цены',
+        prices_sub: 'Здесь указаны цены и что входит в каждую съёмку. Чтобы выбрать дату, напишите мне в Instagram.',
         p1_name: 'Индивидуальная', p1_tag: 'Индивидуальный портрет', p1_price: '75 €',
         p1_f1: 'До 60 минут', p1_f2: 'На улице или в помещении', p1_f3: '50 обработанных фотографий', p1_f4: 'Закрытая онлайн-галерея',
-        choose: 'Обсудить',
-        p2_badge: 'Популярно', p2_name: 'Парная', p2_tag: 'История для двоих', p2_price: '80 €',
+        choose: 'Обсудить съёмку',
+        p2_badge: 'Популярно', p2_name: 'Парная', p2_tag: 'Фотографии вдвоём', p2_price: '80 €',
         p2_f1: 'До 60 минут', p2_f2: 'На улице или в помещении', p2_f3: '50 обработанных фотографий', p2_f4: 'Закрытая онлайн-галерея',
         p3_name: 'Семейная', p3_tag: 'Семья · 3–5 человек', p3_price: '100 €',
         p3_f1: 'До 90 минут', p3_f2: 'На улице или в помещении', p3_f3: 'Для 3–5 человек', p3_f4: '70 обработанных фотографий',
         p4_name: 'Свадебная', p4_tag: 'Свадьба · Помолвка', p4_price: '110 € / час',
         p4_f1: 'Съёмка помолвки', p4_f2: 'Парные фотографии', p4_f3: 'Закрытая онлайн-галерея', p4_f4: '70 обработанных фотографий',
         prices_note_studio: 'Аренда студии не входит в стоимость съёмки.',
-        prices_note_events: 'Напишите в Instagram, чтобы узнать об event-съёмках.',
-        prices_note_gift: 'Напишите в Instagram о подарочных сертификатах.',
-        contact_eyebrow: 'Контакты', contact_title: 'Давайте сохраним<br /><em class="font-normal italic">вашу историю</em>',
-        contact_sub: 'Напишите в Instagram или позвоните. Обсудим дату, формат и настроение будущей съёмки.',
+        prices_note_events: 'Планируете мероприятие? Напишите мне, обсудим съёмку.',
+        prices_note_gift: 'Хотите подарить съёмку? Напишите мне о сертификате.',
+        contact_eyebrow: 'Контакты', contact_title: 'Договоримся<br /><em class="font-normal italic">о съёмке?</em>',
+        contact_sub: 'Напишите, кого хотите поснимать и когда вам удобно. Обсудим место и детали. Если проще по телефону — звоните.',
         contact_reply: 'Обычно отвечаю в течение дня.', contact_phone_label: 'Телефон', contact_phone_action: 'Позвонить',
         contact_instagram_label: 'Instagram', contact_instagram_action: 'Написать',
         footer_copyright: '© 2026 Valentina Šestero. Все права защищены.',
@@ -347,38 +332,37 @@
         __cats: { portrait: 'Portree', couple: 'Paar', wedding: 'Pulm', family: 'Pere', featured: 'Valik' },
         nav_portfolio: 'Portfoolio', nav_about: 'Minust', nav_prices: 'Hinnad',
         nav_book: 'Võta ühendust', nav_book_full: 'Võta ühendust', menu_open: 'Ava menüü',
-        hero_eyebrow: 'Fotograaf · Eesti',
-        hero_title: 'Elavad lood<br /><em class="italic font-normal">vaikses valguses</em>',
-        hero_sub: 'Jäädvustan portreesid, paare, pulmi ja peresid rahulikult ning loomulikult — ilma pinge, kiirustamise ja jäikade poosideta.',
+        hero_title: 'Teie ja teie lähedased<br /><em class="italic font-normal">fotodel</em>',
+        hero_sub: 'Pildistan portreesid, paare, peresid ja pulmi. Kui tulete esimest korda pildistama, aitan teil kaamera ees end mugavalt tunda.',
         hero_cta: 'Kirjuta Instagramis', hero_cta2: 'Vaata töid', hero_scroll: 'Keri',
         trust_years: 'aastat fotograafias', trust_shoots: 'pildistamist', trust_memories: 'sooja mälestust',
         portfolio_eyebrow: 'Portfoolio', portfolio_title: 'Valitud tööd',
-        portfolio_sub: 'Päris inimesed, lähedus ja detailid, mida tahaks hoida. Vali lugu ja vaata fotosid.',
+        portfolio_sub: 'Siin on fotod erinevatelt pildistamistelt. Vaadake kõiki või valige sobiv kategooria.',
         filter_all: 'Kõik', filter_portrait: 'Portreed', filter_couple: 'Paarid', filter_wedding: 'Pulmad', filter_family: 'Pered', gallery_more: 'Näita rohkem',
-        rig_eyebrow1: 'Millega ma pildistan', rig_title1: 'Iga kaader<br />algab siit',
-        rig_sub1: 'Keri alla — kaamera koguneb detailhaaval',
-        rig_sub3: 'Minu põhitööriist portreede ja reportaaži jaoks', rig_cta: 'Vaata fotosid',
-        about_eyebrow: 'Minust', about_title: 'Jäädvustan selle,<br />mida teie tunnete', about_photo_placeholder: 'Siia tuleb Valentina portree',
-        about_p1: 'Minu nimi on Valentina. Pildistan inimesi ja nende lähedasi lugusid rahulikult, tähelepanelikult ning ilma liigse lavastamiseta.',
-        about_p2: 'Pildistamiseks ei pea oskama poseerida. Tutvume, räägime ja liigume teile sobivas tempos. Annan rahulikult juhiseid, et saaksite jääda iseendaks.',
+        rig_eyebrow1: 'Millega ma pildistan', rig_title1: 'Minu kaamera',
+        rig_sub1: 'Kerige alla, et seda lähemalt vaadata.',
+        rig_sub3: 'Sellega pildistan portreesid, peresid ja pulmi.', rig_cta: 'Vaata fotosid',
+        about_eyebrow: 'Minust', about_title: 'Tere,<br />olen Valentina', about_photo_placeholder: 'Siia tuleb Valentina portree',
+        about_p1: 'Pildistan inimesi nii üksi, kahekesi kui ka kogu perega. Pildistan pulmi, aga ka siis, kui soovite lihtsalt uusi fotosid.',
+        about_p2: 'Kaamera ees võib alguses veidi ebamugav olla. Tutvume ja räägime enne natuke. Pildistades annan nõu, kuidas seista, kuhu vaadata ja mida kätega teha.',
         about_f1: 'Loomulik valgus', about_f2: 'Õrn retušš', about_f3: 'Rahulik juhendamine', about_f4: 'Fotod 7–14 päevaga',
         about_cta: 'Võta minuga ühendust', about_badge_hi: 'Tere', about_badge_txt: 'Olen Valentina ja armastan elavaid fotosid.',
-        prices_eyebrow: 'Teenused ja hinnad', prices_title: 'Pildistamise valikud',
-        prices_sub: 'Valige sobiv pildistamise formaat. Üksikasju ja vabu aegu saab arutada Instagramis.',
+        prices_eyebrow: 'Teenused ja hinnad', prices_title: 'Pildistamine ja hinnad',
+        prices_sub: 'Siit leiate hinnad ja iga pildistamise sisu. Sobiva aja leidmiseks kirjutage mulle Instagramis.',
         p1_name: 'Individuaalne', p1_tag: 'Individuaalne portree', p1_price: '75 €',
         p1_f1: 'Kuni 60 minutit', p1_f2: 'Õues või siseruumis', p1_f3: '50 töödeldud fotot', p1_f4: 'Privaatne veebigalerii',
-        choose: 'Arutame',
-        p2_badge: 'Populaarne', p2_name: 'Paarisessioon', p2_tag: 'Lugu kahele', p2_price: '80 €',
+        choose: 'Küsi pildistamise kohta',
+        p2_badge: 'Populaarne', p2_name: 'Paarisessioon', p2_tag: 'Fotod kahekesi', p2_price: '80 €',
         p2_f1: 'Kuni 60 minutit', p2_f2: 'Õues või siseruumis', p2_f3: '50 töödeldud fotot', p2_f4: 'Privaatne veebigalerii',
         p3_name: 'Perepildistamine', p3_tag: 'Pere · 3–5 inimest', p3_price: '100 €',
         p3_f1: 'Kuni 90 minutit', p3_f2: 'Õues või siseruumis', p3_f3: '3–5 inimesele', p3_f4: '70 töödeldud fotot',
         p4_name: 'Pulmapildistamine', p4_tag: 'Pulmad · Kihlus', p4_price: '110 € / tund',
         p4_f1: 'Kihluse fotosessioon', p4_f2: 'Paarifotod', p4_f3: 'Privaatne veebigalerii', p4_f4: '70 töödeldud fotot',
         prices_note_studio: 'Stuudio rent ei sisaldu pildistamise hinnas.',
-        prices_note_events: 'Ürituste pildistamise info saamiseks kirjutage Instagramis.',
-        prices_note_gift: 'Kinkekaardi võimaluste kohta kirjutage Instagramis.',
-        contact_eyebrow: 'Kontakt', contact_title: 'Hoiame alles<br /><em class="font-normal italic">teie loo</em>',
-        contact_sub: 'Kirjutage Instagramis või helistage. Räägime kuupäevast, formaadist ja soovitud meeleolust.',
+        prices_note_events: 'Plaanite üritust? Kirjutage mulle ja räägime pildistamisest.',
+        prices_note_gift: 'Soovite kinkida pildistamise? Küsige minult kinkekaarti.',
+        contact_eyebrow: 'Kontakt', contact_title: 'Lepime kokku<br /><em class="font-normal italic">pildistamise?</em>',
+        contact_sub: 'Kirjutage, keda soovite pildistada ja millal teile sobiks. Lepime kokku koha ja üksikasjad. Võite ka helistada.',
         contact_reply: 'Vastan tavaliselt ühe päeva jooksul.', contact_phone_label: 'Telefon', contact_phone_action: 'Helista',
         contact_instagram_label: 'Instagram', contact_instagram_action: 'Kirjuta',
         footer_copyright: '© 2026 Valentina Šestero. Kõik õigused kaitstud.',
@@ -399,38 +383,37 @@
         __cats: { portrait: 'Portrait', couple: 'Couple', wedding: 'Wedding', family: 'Family', featured: 'Featured' },
         nav_portfolio: 'Portfolio', nav_about: 'About', nav_prices: 'Pricing',
         nav_book: 'Get in touch', nav_book_full: 'Get in touch', menu_open: 'Open menu',
-        hero_eyebrow: 'Photographer · Estonia',
-        hero_title: 'Real stories<br />in <em class="italic font-normal">gentle light</em>',
-        hero_sub: 'I photograph portraits, couples, weddings and families with a calm, natural approach — no pressure, rushing or stiff poses.',
+        hero_title: 'You and your<br /><em class="italic font-normal">favourite people</em>',
+        hero_sub: 'I photograph individuals, couples, families and weddings. If it is your first session, I will help you get comfortable in front of the camera.',
         hero_cta: 'Message on Instagram', hero_cta2: 'View portfolio', hero_scroll: 'Scroll',
         trust_years: 'years in photography', trust_shoots: 'sessions', trust_memories: 'warm memories',
         portfolio_eyebrow: 'Portfolio', portfolio_title: 'Selected work',
-        portfolio_sub: 'Real people, closeness and details worth keeping. Choose a story and explore the photographs.',
+        portfolio_sub: 'A selection of photos from my sessions. Browse them all or choose a category.',
         filter_all: 'All', filter_portrait: 'Portraits', filter_couple: 'Couples', filter_wedding: 'Weddings', filter_family: 'Families', gallery_more: 'Show more',
-        rig_eyebrow1: 'What I shoot with', rig_title1: 'Every frame<br />begins here',
-        rig_sub1: 'Scroll down — the camera comes together piece by piece',
-        rig_sub3: 'My main tool for portraits and documentary work', rig_cta: 'View photographs',
-        about_eyebrow: 'About me', about_title: 'I preserve<br />what you feel', about_photo_placeholder: 'Valentina’s portrait will appear here',
-        about_p1: 'My name is Valentina. I photograph people and the stories they share, with care, calm direction and very little staging.',
-        about_p2: 'You do not need to know how to pose. We get acquainted, talk and move at a pace that feels comfortable. I offer gentle guidance so you can simply be yourself.',
+        rig_eyebrow1: 'What I shoot with', rig_title1: 'My camera',
+        rig_sub1: 'Scroll down for a closer look.',
+        rig_sub3: 'I use it for portraits, family sessions and weddings.', rig_cta: 'View photographs',
+        about_eyebrow: 'About me', about_title: 'Hi,<br />I’m Valentina', about_photo_placeholder: 'Valentina’s portrait will appear here',
+        about_p1: 'I photograph people on their own, with a partner or with the whole family. Sometimes it is a wedding; sometimes you just want some new photos.',
+        about_p2: 'It is normal to feel awkward in front of a camera. We will get to know each other first. During the session, I will help with where to stand, where to look and what to do with your hands.',
         about_f1: 'Natural light', about_f2: 'Gentle retouching', about_f3: 'Calm, clear guidance', about_f4: 'Delivered in 7–14 days',
         about_cta: 'Get in touch', about_badge_hi: 'Hi', about_badge_txt: 'I\'m Valentina, and I love honest photographs.',
-        prices_eyebrow: 'Services & pricing', prices_title: 'Session options',
-        prices_sub: 'Choose the session that suits you. Message me on Instagram for details and availability.',
+        prices_eyebrow: 'Services & pricing', prices_title: 'Sessions and prices',
+        prices_sub: 'Here is what each session costs and includes. Send me a message on Instagram to find a date.',
         p1_name: 'Individual', p1_tag: 'Individual portrait', p1_price: '€75',
         p1_f1: 'Up to 60 minutes', p1_f2: 'Outdoor or indoor', p1_f3: '50 edited photographs', p1_f4: 'Private online gallery',
-        choose: 'Let\'s talk',
-        p2_badge: 'Most popular', p2_name: 'Couple', p2_tag: 'A story for two', p2_price: '€80',
+        choose: 'Ask about a session',
+        p2_badge: 'Most popular', p2_name: 'Couple', p2_tag: 'Photos of the two of you', p2_price: '€80',
         p2_f1: 'Up to 60 minutes', p2_f2: 'Outdoor or indoor', p2_f3: '50 edited photographs', p2_f4: 'Private online gallery',
         p3_name: 'Family', p3_tag: 'Family · 3–5 people', p3_price: '€100',
         p3_f1: 'Up to 90 minutes', p3_f2: 'Outdoor or indoor', p3_f3: 'For 3–5 people', p3_f4: '70 edited photographs',
         p4_name: 'Wedding', p4_tag: 'Wedding · Engagement', p4_price: '€110 / hour',
         p4_f1: 'Engagement session', p4_f2: 'Couple photographs', p4_f3: 'Private online gallery', p4_f4: '70 edited photographs',
         prices_note_studio: 'Studio rental is not included in the session price.',
-        prices_note_events: 'Message me on Instagram for information about event photography.',
-        prices_note_gift: 'Message me on Instagram for gift card options.',
-        contact_eyebrow: 'Contact', contact_title: 'Let\'s preserve<br /><em class="font-normal italic">your story</em>',
-        contact_sub: 'Message me on Instagram or call. We can discuss the date, format and feeling you have in mind.',
+        prices_note_events: 'Planning an event? Message me to discuss photography.',
+        prices_note_gift: 'Want to give someone a photo session? Ask me about a gift card.',
+        contact_eyebrow: 'Contact', contact_title: 'Shall we plan<br /><em class="font-normal italic">your session?</em>',
+        contact_sub: 'Tell me who you would like photographed and when you are free. We can work out the location and details together. You are welcome to call, too.',
         contact_reply: 'I usually reply within one day.', contact_phone_label: 'Phone', contact_phone_action: 'Call',
         contact_instagram_label: 'Instagram', contact_instagram_action: 'Message',
         footer_copyright: '© 2026 Valentina Šestero. All rights reserved.',

@@ -230,3 +230,26 @@
       #nav { transition: none !important; }
       html { scroll-behavior: auto; }
     }
+
+/* Keep navigation and language choices accessible without a mobile menu. */
+@media (max-width: 767px) {
+  #nav .site-nav {
+    height: auto;
+    min-height: 96px;
+    padding-block: 12px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  #nav #logo { font-size: 19px; }
+  #nav .nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    gap: 28px;
+  }
+  #nav #langSwitch button { padding-inline: 7px; }
+}
+@media (max-width: 359px) {
+  #nav > .max-w-7xl { padding-inline: 14px; }
+  #nav #logo { font-size: 17px; }
+}

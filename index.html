@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Valentina Šestero — фотограф | Портреты, свадьбы и семейные истории</title>
-  <meta name="description" content="Valentina Šestero — фотограф в Эстонии. Спокойные, живые портреты, истории пар, свадебные и семейные съёмки." />
+  <meta name="description" content="Valentina Šestero — фотограф в Эстонии. Портреты, съёмки для пар и семей, свадебная фотография. Посмотрите работы и напишите, чтобы выбрать дату." />
   <meta name="theme-color" content="#F8F6F1" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Valentina Šestero — фотограф" />
-  <meta property="og:description" content="Живые портреты, истории пар, свадебные и семейные съёмки в Эстонии." />
+  <meta property="og:description" content="Портреты, пары, семьи и свадьбы. Фотографии и цены на съёмку." />
   <meta property="og:locale" content="ru_RU" />
   <meta property="og:image" content="assets/hero.webp" />
 
@@ -56,12 +56,12 @@
   <header id="nav" class="fixed top-0 inset-x-0 z-40 border-b border-line/60 bg-bg/85 backdrop-blur-md transition-all duration-300">
     <div id="scrollProgress" aria-hidden="true"></div>
     <div class="mx-auto max-w-7xl px-6 lg:px-10">
-      <nav class="flex items-center justify-between h-20">
+      <nav class="site-nav flex items-center justify-between h-20">
         <a href="#hero" id="logo" class="font-serif text-xl sm:text-2xl tracking-tightest text-ink select-none">
           Valentina Šestero<span class="text-accent">.</span>
         </a>
 
-        <ul class="hidden md:flex items-center gap-9 text-[13px] font-medium text-soft">
+        <ul class="nav-links flex items-center gap-9 text-[13px] font-medium text-soft">
           <li><a href="#portfolio" class="hover:text-ink transition-colors cursor-pointer" data-i18n="nav_portfolio">Портфолио</a></li>
           <li><a href="#about"     class="hover:text-ink transition-colors cursor-pointer" data-i18n="nav_about">Обо&nbsp;мне</a></li>
           <li><a href="#prices"    class="hover:text-ink transition-colors cursor-pointer" data-i18n="nav_prices">Цены</a></li>
@@ -69,7 +69,7 @@
 
         <div class="flex items-center gap-3">
           <!-- Language switch -->
-          <div id="langSwitch" class="hidden sm:flex items-center rounded-full border border-line bg-surface p-0.5 text-[12px] font-semibold">
+          <div id="langSwitch" class="flex items-center rounded-full border border-line bg-surface p-0.5 text-[12px] font-semibold">
             <button data-lang="ru" class="lang-btn rounded-full px-2.5 py-1 transition-colors cursor-pointer">RU</button>
             <button data-lang="et" class="lang-btn rounded-full px-2.5 py-1 transition-colors cursor-pointer">ET</button>
             <button data-lang="en" class="lang-btn rounded-full px-2.5 py-1 transition-colors cursor-pointer">EN</button>
@@ -81,29 +81,10 @@
             Связаться
           </a>
 
-          <!-- Mobile toggle -->
-          <button id="burger" aria-label="Открыть меню" aria-expanded="false" data-i18n-aria="menu_open"
-                  class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-sand transition-colors cursor-pointer">
-            <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
-          </button>
         </div>
       </nav>
     </div>
 
-    <!-- Mobile menu -->
-    <div id="mobileMenu" class="md:hidden hidden border-t border-line bg-bg/95 backdrop-blur-md">
-      <ul class="mx-auto max-w-7xl px-6 py-4 flex flex-col gap-1 text-sm font-medium">
-        <li><a href="#portfolio" class="block py-3 text-soft hover:text-ink transition-colors cursor-pointer" data-i18n="nav_portfolio">Портфолио</a></li>
-        <li><a href="#about"     class="block py-3 text-soft hover:text-ink transition-colors cursor-pointer" data-i18n="nav_about">Обо мне</a></li>
-        <li><a href="#prices"    class="block py-3 text-soft hover:text-ink transition-colors cursor-pointer" data-i18n="nav_prices">Цены</a></li>
-        <li class="mt-3 flex items-center gap-1">
-          <button data-lang="ru" class="lang-btn rounded-full border border-line px-3 py-1.5 text-[12px] font-semibold cursor-pointer">RU</button>
-          <button data-lang="et" class="lang-btn rounded-full border border-line px-3 py-1.5 text-[12px] font-semibold cursor-pointer">ET</button>
-          <button data-lang="en" class="lang-btn rounded-full border border-line px-3 py-1.5 text-[12px] font-semibold cursor-pointer">EN</button>
-        </li>
-        <li><a href="#contact"   class="mt-2 block rounded-full bg-accent py-3 text-center text-white hover:bg-accentDeep transition-colors duration-300 cursor-pointer" data-i18n="nav_book_full">Связаться</a></li>
-      </ul>
-    </div>
   </header>
 
   <!-- ============ HERO ============ -->
@@ -116,12 +97,11 @@
 
     <div class="relative z-10 mx-auto flex max-w-7xl w-full justify-start md:justify-end px-6 lg:px-10 pb-14 lg:pb-20">
       <div class="hero-copy max-w-2xl md:w-[52%]">
-      <p class="eyebrow reveal text-[11px] font-semibold uppercase text-white/80 md:text-accent mb-5" data-i18n="hero_eyebrow">Фотограф · Эстония</p>
       <h1 class="reveal font-serif text-white md:text-ink text-[clamp(3.3rem,7vw,6.6rem)] leading-[0.94] tracking-tightest" data-i18n-html="hero_title">
-        Живые истории<br />в <em class="italic font-normal">тихом свете</em>
+        Вы, ваши близкие<br />и <em class="italic font-normal">любимые моменты</em>
       </h1>
       <p class="reveal mt-6 max-w-lg text-white/90 md:text-soft text-base lg:text-lg leading-relaxed" data-i18n="hero_sub">
-        Бережно снимаю портреты, пары, свадьбы и семьи — без напряжения, спешки и неестественных поз.
+        Снимаю портреты, пары, семьи и свадьбы. Если вы впервые на съёмке, подскажу, куда встать и что делать перед камерой.
       </p>
       <div class="reveal mt-8 flex flex-wrap items-center gap-3">
         <a href="https://www.instagram.com/valjashestero.ph/" target="_blank" rel="noopener noreferrer"
@@ -152,7 +132,7 @@
         <div class="reveal max-w-xl">
           <p class="eyebrow text-[11px] font-semibold uppercase text-accent mb-4" data-i18n="portfolio_eyebrow">Портфолио</p>
           <h2 class="font-serif text-5xl lg:text-6xl tracking-tightest leading-[1.05]" data-i18n="portfolio_title">Избранные работы</h2>
-          <p class="mt-4 max-w-lg text-soft" data-i18n="portfolio_sub">Настоящие люди, близость и детали, которые хочется сохранить. Выберите историю, чтобы посмотреть фотографии.</p>
+          <p class="mt-4 max-w-lg text-soft" data-i18n="portfolio_sub">Здесь собраны фотографии с разных съёмок. Можно посмотреть всё или выбрать нужный раздел.</p>
         </div>
 
         <!-- Filters -->
@@ -197,8 +177,8 @@
       <!-- Caption: intro -->
       <div class="rig-cap absolute z-20 top-[12%] left-0 right-0 px-6 text-center will-change-transform" data-from="0" data-to="0.20">
         <p class="eyebrow text-[11px] font-semibold uppercase text-accent mb-3" data-i18n="rig_eyebrow1">Чем я снимаю</p>
-        <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tightest leading-[1.04]" data-i18n-html="rig_title1">Каждый кадр<br />начинается здесь</h2>
-        <p class="mt-4 text-soft" data-i18n="rig_sub1">Прокрутите вниз — камера соберётся по деталям</p>
+        <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tightest leading-[1.04]" data-i18n-html="rig_title1">Моя камера</h2>
+        <p class="mt-4 text-soft" data-i18n="rig_sub1">Листайте вниз, чтобы рассмотреть её поближе.</p>
       </div>
 
       <!-- Caption: floating specs -->
@@ -213,7 +193,7 @@
       <div class="rig-cap absolute z-20 bottom-[11%] left-0 right-0 px-6 text-center will-change-transform" data-from="0.58" data-to="0.80">
         <p class="eyebrow text-[11px] font-semibold uppercase text-accent mb-2">Canon</p>
         <h2 class="font-serif text-4xl sm:text-5xl tracking-tightest leading-none">EOS R7</h2>
-          <p class="mt-3 text-soft" data-i18n="rig_sub3">Мой основной инструмент для портретов и репортажа</p>
+          <p class="mt-3 text-soft" data-i18n="rig_sub3">На неё я снимаю портреты, семьи и свадьбы.</p>
         <a href="#portfolio" class="mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3 text-sm font-medium text-white hover:bg-black transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-ink focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
           <span data-i18n="rig_cta">Смотреть фотографии</span>
           <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></svg>
@@ -224,10 +204,10 @@
       <div class="rig-cap absolute z-20 inset-x-0 bottom-[7%] px-6 sm:top-0 sm:bottom-0 sm:right-auto sm:left-0 sm:flex sm:items-center lg:px-0 lg:left-[7%] sm:max-w-[48%] lg:max-w-[43%] will-change-transform" data-from="0.85" data-to="2" data-slide="x">
           <div class="rounded-[1.5rem] border border-line/80 bg-surface/88 p-5 shadow-[0_24px_70px_-44px_rgba(39,35,31,.35)] backdrop-blur-sm sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-none">
             <p class="eyebrow text-[11px] font-semibold uppercase text-accent mb-3" data-i18n="about_eyebrow">Обо мне</p>
-            <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl tracking-tightest leading-[1.07]" data-i18n-html="about_title">Сохраняю то,<br />что чувствуете вы</h2>
+            <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl tracking-tightest leading-[1.07]" data-i18n-html="about_title">Привет,<br />я Валентина</h2>
             <div class="mt-4 lg:mt-5 space-y-3 text-soft font-light leading-relaxed text-sm lg:text-base xl:text-[17px] max-w-md lg:max-w-lg xl:max-w-xl">
-              <p data-i18n="about_p1">Меня зовут Валентина. Я снимаю людей и их близкие истории — бережно, спокойно и без лишней постановки.</p>
-              <p class="hidden sm:block" data-i18n="about_p2">На съёмке не нужно уметь позировать. Мы знакомимся, разговариваем и двигаемся в удобном для вас темпе. Я мягко подсказываю, а вы можете просто быть собой.</p>
+              <p data-i18n="about_p1">Я фотографирую людей: по одному, вдвоём, всей семьёй. Снимаю свадьбы и обычные встречи, когда просто хочется новых фотографий.</p>
+              <p class="hidden sm:block" data-i18n="about_p2">Если перед камерой неловко — это нормально. Сначала познакомимся и немного поговорим. На съёмке я подскажу, как встать, куда посмотреть и чем занять руки.</p>
             </div>
 
             <ul class="mt-5 lg:mt-6 hidden sm:grid grid-cols-2 gap-x-5 lg:gap-x-8 gap-y-2.5 max-w-sm lg:max-w-md">
@@ -237,15 +217,15 @@
               </li>
               <li class="flex items-start gap-2.5">
                 <svg class="mt-0.5 h-4 w-4 flex-none text-ink" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m20 6-11 11-5-5"/></svg>
-                <span class="text-[13px] lg:text-sm text-ink" data-i18n="about_f2">Деликатная ретушь</span>
+                <span class="text-[13px] lg:text-sm text-ink" data-i18n="about_f2">Аккуратная ретушь</span>
               </li>
               <li class="flex items-start gap-2.5">
                 <svg class="mt-0.5 h-4 w-4 flex-none text-ink" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m20 6-11 11-5-5"/></svg>
-                <span class="text-[13px] lg:text-sm text-ink" data-i18n="about_f3">Мягко направляю в кадре</span>
+                <span class="text-[13px] lg:text-sm text-ink" data-i18n="about_f3">Помогу с позированием</span>
               </li>
               <li class="flex items-start gap-2.5">
                 <svg class="mt-0.5 h-4 w-4 flex-none text-ink" fill="none" stroke="currentColor" stroke-width="1.6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m20 6-11 11-5-5"/></svg>
-                <span class="text-[13px] lg:text-sm text-ink" data-i18n="about_f4">Срок отдачи 7–14 дней</span>
+                <span class="text-[13px] lg:text-sm text-ink" data-i18n="about_f4">Готовые фото за 7–14 дней</span>
               </li>
             </ul>
 
@@ -274,9 +254,9 @@
               <span data-i18n="prices_eyebrow">Услуги и цены</span>
             </span>
           </div>
-          <h2 class="reveal font-serif text-5xl lg:text-6xl tracking-tightest leading-[1.05]" style="transition-delay:.1s" data-i18n="prices_title">Форматы съёмки</h2>
+          <h2 class="reveal font-serif text-5xl lg:text-6xl tracking-tightest leading-[1.05]" style="transition-delay:.1s" data-i18n="prices_title">Съёмки и цены</h2>
         </div>
-        <p class="reveal max-w-sm text-soft" style="transition-delay:.2s" data-i18n="prices_sub">Выберите подходящий формат съёмки. Детали и свободные даты можно обсудить в Instagram.</p>
+        <p class="reveal max-w-sm text-soft" style="transition-delay:.2s" data-i18n="prices_sub">Здесь указаны цены и что входит в каждую съёмку. Чтобы выбрать дату, напишите мне в Instagram.</p>
       </div>
 
       <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-6">
@@ -290,7 +270,7 @@
             <p class="stg mt-8 font-serif text-[2.75rem] leading-none tracking-tightest" style="--d:.12s" data-i18n="p1_price">75 €</p>
             <p class="stg mt-4 text-[13px] text-soft" style="--d:.18s" data-i18n="p1_tag">Индивидуальный портрет</p>
 
-            <a href="#contact" class="stg mt-7 inline-flex justify-center rounded-full border border-ink py-3 text-sm font-medium text-ink hover:bg-ink hover:text-white transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg" style="--d:.24s" data-i18n="choose">Обсудить</a>
+            <a href="#contact" class="stg mt-7 inline-flex justify-center rounded-full border border-ink py-3 text-sm font-medium text-ink hover:bg-ink hover:text-white transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg" style="--d:.24s" data-i18n="choose">Обсудить съёмку</a>
 
             <ul class="stg mt-7 flex flex-1 flex-col" style="--d:.3s">
               <li class="flex items-center gap-3 py-4 text-sm text-soft">
@@ -323,9 +303,9 @@
             <div class="stg mt-4 border-t border-white/15" style="--d:.06s"></div>
 
             <p class="stg mt-8 font-serif text-[2.75rem] leading-none tracking-tightest" style="--d:.12s" data-i18n="p2_price">80 €</p>
-            <p class="stg mt-4 text-[13px] text-white/60" style="--d:.18s" data-i18n="p2_tag">История для двоих</p>
+            <p class="stg mt-4 text-[13px] text-white/60" style="--d:.18s" data-i18n="p2_tag">Фотографии вдвоём</p>
 
-            <a href="#contact" class="stg mt-7 inline-flex justify-center rounded-full bg-accent py-3 text-sm font-medium text-white hover:bg-accentDeep transition-colors duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-rose focus-visible:ring-offset-2 focus-visible:ring-offset-ink" style="--d:.24s" data-i18n="choose">Обсудить</a>
+            <a href="#contact" class="stg mt-7 inline-flex justify-center rounded-full bg-accent py-3 text-sm font-medium text-white hover:bg-accentDeep transition-colors duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-rose focus-visible:ring-offset-2 focus-visible:ring-offset-ink" style="--d:.24s" data-i18n="choose">Обсудить съёмку</a>
 
             <ul class="stg mt-7 flex flex-1 flex-col" style="--d:.3s">
               <li class="flex items-center gap-3 py-4 text-sm text-white/80">
@@ -358,7 +338,7 @@
             <p class="stg mt-8 font-serif text-[2.75rem] leading-none tracking-tightest" style="--d:.12s" data-i18n="p3_price">100 €</p>
             <p class="stg mt-4 text-[13px] text-soft" style="--d:.18s" data-i18n="p3_tag">Семья · 3–5 человек</p>
 
-            <a href="#contact" class="stg mt-7 inline-flex justify-center rounded-full border border-ink py-3 text-sm font-medium text-ink hover:bg-ink hover:text-white transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg" style="--d:.24s" data-i18n="choose">Обсудить</a>
+            <a href="#contact" class="stg mt-7 inline-flex justify-center rounded-full border border-ink py-3 text-sm font-medium text-ink hover:bg-ink hover:text-white transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg" style="--d:.24s" data-i18n="choose">Обсудить съёмку</a>
 
             <ul class="stg mt-7 flex flex-1 flex-col" style="--d:.3s">
               <li class="flex items-center gap-3 py-4 text-sm text-soft">
@@ -391,7 +371,7 @@
             <p class="stg mt-8 font-serif text-[2.75rem] leading-none tracking-tightest" style="--d:.12s" data-i18n="p4_price">110 € / час</p>
             <p class="stg mt-4 text-[13px] text-soft" style="--d:.18s" data-i18n="p4_tag">Свадьба · Помолвка</p>
 
-            <a href="#contact" class="stg mt-7 inline-flex justify-center rounded-full border border-ink py-3 text-sm font-medium text-ink hover:bg-ink hover:text-white transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg" style="--d:.24s" data-i18n="choose">Обсудить</a>
+            <a href="#contact" class="stg mt-7 inline-flex justify-center rounded-full border border-ink py-3 text-sm font-medium text-ink hover:bg-ink hover:text-white transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg" style="--d:.24s" data-i18n="choose">Обсудить съёмку</a>
 
             <ul class="stg mt-7 flex flex-1 flex-col" style="--d:.3s">
               <li class="flex items-center gap-3 py-4 text-sm text-soft">
@@ -417,8 +397,8 @@
 
       <div class="reveal mt-8 grid gap-3 text-[13px] text-faint md:grid-cols-3">
         <p class="rounded-2xl border border-line bg-surface px-5 py-4 text-center" data-i18n="prices_note_studio">Аренда студии не входит в стоимость съёмки.</p>
-        <a href="https://www.instagram.com/valjashestero.ph/" target="_blank" rel="noopener noreferrer" class="rounded-2xl border border-line bg-surface px-5 py-4 text-center transition-colors hover:border-accent hover:text-accent" data-i18n="prices_note_events">Напишите в Instagram, чтобы узнать об event-съёмках.</a>
-        <a href="https://www.instagram.com/valjashestero.ph/" target="_blank" rel="noopener noreferrer" class="rounded-2xl border border-line bg-surface px-5 py-4 text-center transition-colors hover:border-accent hover:text-accent" data-i18n="prices_note_gift">Напишите в Instagram о подарочных сертификатах.</a>
+        <a href="https://www.instagram.com/valjashestero.ph/" target="_blank" rel="noopener noreferrer" class="rounded-2xl border border-line bg-surface px-5 py-4 text-center transition-colors hover:border-accent hover:text-accent" data-i18n="prices_note_events">Планируете мероприятие? Напишите мне, обсудим съёмку.</a>
+        <a href="https://www.instagram.com/valjashestero.ph/" target="_blank" rel="noopener noreferrer" class="rounded-2xl border border-line bg-surface px-5 py-4 text-center transition-colors hover:border-accent hover:text-accent" data-i18n="prices_note_gift">Хотите подарить съёмку? Напишите мне о сертификате.</a>
       </div>
     </div>
   </section>
@@ -430,8 +410,8 @@
         <div class="grid items-stretch lg:grid-cols-[1.05fr_.95fr]">
           <div class="p-8 sm:p-12 lg:p-16">
             <p class="eyebrow reveal text-[11px] font-semibold uppercase text-accent" data-i18n="contact_eyebrow">Контакты</p>
-            <h2 class="reveal mt-5 max-w-xl font-serif text-5xl leading-[.98] tracking-tightest sm:text-6xl" data-i18n-html="contact_title">Давайте сохраним<br /><em class="font-normal italic">вашу историю</em></h2>
-            <p class="reveal mt-6 max-w-lg text-base leading-relaxed text-soft" data-i18n="contact_sub">Напишите в Instagram или позвоните. Обсудим дату, формат и настроение будущей съёмки.</p>
+            <h2 class="reveal mt-5 max-w-xl font-serif text-5xl leading-[.98] tracking-tightest sm:text-6xl" data-i18n-html="contact_title">Договоримся<br /><em class="font-normal italic">о съёмке?</em></h2>
+            <p class="reveal mt-6 max-w-lg text-base leading-relaxed text-soft" data-i18n="contact_sub">Напишите, кого хотите поснимать и когда вам удобно. Обсудим место и детали. Если проще по телефону — звоните.</p>
             <p class="reveal mt-8 text-[13px] text-faint" data-i18n="contact_reply">Обычно отвечаю в течение дня.</p>
           </div>
 

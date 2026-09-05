@@ -10,3 +10,5 @@ next.config.mjs
 postcss.config.mjs
 tests
 public
+blender
+reference

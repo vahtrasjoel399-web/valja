@@ -18,36 +18,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            serif: ['Cormorant Garamond', 'Georgia', 'serif'],
-            sans: ['Manrope', 'system-ui', 'sans-serif'],
-          },
-          colors: {
-            bg:         '#F8F6F1',
-            surface:    '#FCFBF8',
-            ink:        '#27231F',
-            soft:       '#625D56',
-            faint:      '#817A71',
-            beige:      '#E9E4DC',
-            sand:       '#F1EDE6',
-            rose:       '#C9B8AA',
-            accent:     '#8A6F60',
-            accentDeep: '#6F574B',
-            line:       '#DDD7CE',
-          },
-          letterSpacing: {
-            tightest: '-0.03em',
-          },
-        },
-      },
-    };
-  </script>
+  <link rel="stylesheet" href="assets/tailwind.css" />
 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Manrope:wght@400;500;600&amp;display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Manrope:wght@400;500;600&amp;display=swap" /></noscript>
   <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -168,7 +142,7 @@
       <!-- ambient light -->
       <div class="pointer-events-none absolute inset-0" style="background:radial-gradient(62% 60% at 44% 44%,#FFFFFF 0%,#F4F4F1 58%,#FFFFFF 100%)"></div>
 
-      <canvas id="rigCanvas" class="relative z-10 block max-w-full"></canvas>
+      <canvas id="rigCanvas" class="relative z-10 block max-w-full" role="img" aria-label="Трёхмерная камера Canon EOS R7: сборка объектива при прокрутке"></canvas>
 
       <!-- Temporary portrait slot. Replace this inner placeholder with the photographer's image later. -->
       <figure id="photographerPortrait" aria-hidden="true">

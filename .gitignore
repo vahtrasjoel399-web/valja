@@ -8,3 +8,7 @@ out/
 *.tsbuildinfo
 next-env.d.ts
 public/
+blender/*.blend*
+blender/*.png
+blender/web-frames/
+reference/

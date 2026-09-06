@@ -70,15 +70,15 @@
          class="hero-photo absolute inset-0 h-full w-full object-cover" />
     <div class="hero-shade absolute inset-0"></div>
 
-    <div class="relative z-10 mx-auto flex max-w-7xl w-full justify-start md:justify-end px-6 lg:px-10 pb-14 lg:pb-20">
-      <div class="hero-copy max-w-2xl md:w-[52%]">
+    <div class="relative z-10 mx-auto flex max-w-7xl w-full justify-center px-6 lg:px-10 pb-14 lg:pb-20 text-center">
+      <div class="hero-copy max-w-2xl">
       <h1 class="reveal font-serif text-white md:text-ink text-[clamp(3.3rem,7vw,6.6rem)] leading-[0.94] tracking-tightest" data-i18n-html="hero_title">
         Вы, ваши близкие<br />и <em class="italic font-normal">любимые моменты</em>
       </h1>
-      <p class="reveal mt-6 max-w-lg text-white/90 md:text-soft text-base lg:text-lg leading-relaxed" data-i18n="hero_sub">
+      <p class="reveal mt-6 mx-auto max-w-lg text-white/90 md:text-soft text-base lg:text-lg leading-relaxed" data-i18n="hero_sub">
         Снимаю портреты, пары, семьи и свадьбы. Если вы впервые на съёмке, подскажу, куда встать и что делать перед камерой.
       </p>
-      <div class="reveal mt-8 flex flex-wrap items-center gap-3">
+      <div class="reveal mt-8 flex flex-wrap items-center justify-center gap-3">
         <a href="https://www.instagram.com/valjashestero.ph/" target="_blank" rel="noopener noreferrer"
            class="animated-cta inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-medium text-white hover:bg-accentDeep transition-colors duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent">
           <span data-i18n="hero_cta">Написать в Instagram</span>
@@ -105,19 +105,9 @@
     <div class="mx-auto max-w-7xl px-6 lg:px-10">
       <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12">
         <div class="reveal max-w-xl">
-          <p class="eyebrow text-[11px] font-semibold uppercase text-accent mb-4" data-i18n="portfolio_eyebrow">Портфолио</p>
           <h2 class="font-serif text-5xl lg:text-6xl tracking-tightest leading-[1.05]" data-i18n="portfolio_title">Избранные работы</h2>
-          <p class="mt-4 max-w-lg text-soft" data-i18n="portfolio_sub">Здесь собраны фотографии с разных съёмок. Можно посмотреть всё или выбрать нужный раздел.</p>
         </div>
-
-        <!-- Filters -->
-        <div class="reveal flex flex-wrap gap-2" id="filters" role="tablist" aria-label="Категории работ">
-          <button data-filter="all"      class="filter-btn is-active rounded-full border border-ink bg-ink px-5 py-2 text-[13px] font-medium text-white transition-colors cursor-pointer" data-i18n="filter_all">Все</button>
-          <button data-filter="portrait" class="filter-btn rounded-full border border-line bg-surface px-5 py-2 text-[13px] font-medium text-soft hover:border-ink hover:text-ink transition-colors cursor-pointer" data-i18n="filter_portrait">Портреты</button>
-          <button data-filter="couple"   class="filter-btn rounded-full border border-line bg-surface px-5 py-2 text-[13px] font-medium text-soft hover:border-ink hover:text-ink transition-colors cursor-pointer" data-i18n="filter_couple">Пары</button>
-          <button data-filter="wedding"  class="filter-btn rounded-full border border-line bg-surface px-5 py-2 text-[13px] font-medium text-soft hover:border-ink hover:text-ink transition-colors cursor-pointer" data-i18n="filter_wedding">Свадьбы</button>
-          <button data-filter="family"   class="filter-btn rounded-full border border-line bg-surface px-5 py-2 text-[13px] font-medium text-soft hover:border-ink hover:text-ink transition-colors cursor-pointer" data-i18n="filter_family">Семейные</button>
-        </div>
+        <div id="filters" class="hidden" aria-hidden="true"></div>
       </div>
 
       <!-- Gallery -->
@@ -154,14 +144,14 @@
       </figure>
 
       <!-- Caption: intro -->
-      <div class="rig-cap absolute z-20 top-[12%] left-0 right-0 px-6 text-center will-change-transform" data-from="0" data-to="0.20">
+      <div class="rig-cap hidden" data-from="0" data-to="0.20">
         <p class="eyebrow text-[11px] font-semibold uppercase text-accent mb-3" data-i18n="rig_eyebrow1">Чем я снимаю</p>
         <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl tracking-tightest leading-[1.04]" data-i18n-html="rig_title1">Моя камера</h2>
         <p class="mt-4 text-soft" data-i18n="rig_sub1">Листайте вниз, чтобы рассмотреть её поближе.</p>
       </div>
 
       <!-- Caption: floating specs -->
-      <div class="rig-cap absolute z-20 inset-0 pointer-events-none will-change-transform" data-from="0.24" data-to="0.50">
+      <div class="rig-cap hidden" data-from="0.24" data-to="0.50">
         <span class="absolute left-3 sm:left-[14%] top-[22%] sm:top-[26%] inline-flex items-center gap-2 rounded-full border border-line bg-surface/90 backdrop-blur px-3 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-[13px] font-medium text-ink shadow-[0_10px_30px_-18px_rgba(26,26,26,.5)]">24.2 МП · Full Frame</span>
         <span class="absolute right-3 sm:right-[14%] top-[31%] sm:top-[34%] inline-flex items-center gap-2 rounded-full border border-line bg-surface/90 backdrop-blur px-3 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-[13px] font-medium text-ink shadow-[0_10px_30px_-18px_rgba(26,26,26,.5)]">до 40 кадров/с · электронный затвор</span>
         <span class="absolute left-3 sm:left-[16%] bottom-[30%] inline-flex items-center gap-2 rounded-full border border-line bg-surface/90 backdrop-blur px-3 py-1.5 sm:px-4 sm:py-2 text-[11px] sm:text-[13px] font-medium text-ink shadow-[0_10px_30px_-18px_rgba(26,26,26,.5)]">DIGIC X</span>
@@ -169,7 +159,7 @@
       </div>
 
       <!-- Caption: reveal -->
-      <div class="rig-cap absolute z-20 bottom-[11%] left-0 right-0 px-6 text-center will-change-transform" data-from="0.58" data-to="0.80">
+      <div class="rig-cap hidden" data-from="0.58" data-to="0.80">
         <p class="eyebrow text-[11px] font-semibold uppercase text-accent mb-2">Canon</p>
         <h2 class="font-serif text-4xl sm:text-5xl tracking-tightest leading-none">EOS R8</h2>
           <p class="mt-3 text-soft" data-i18n="rig_sub3">На неё я снимаю портреты, семьи и свадьбы.</p>
@@ -235,7 +225,6 @@
           </div>
           <h2 class="reveal font-serif text-5xl lg:text-6xl tracking-tightest leading-[1.05]" style="transition-delay:.1s" data-i18n="prices_title">Съёмки и цены</h2>
         </div>
-        <p class="reveal max-w-sm text-soft" style="transition-delay:.2s" data-i18n="prices_sub">Здесь указаны цены и что входит в каждую съёмку. Чтобы выбрать дату, напишите мне в Instagram.</p>
       </div>
 
       <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-6">
@@ -388,10 +377,7 @@
       <div class="overflow-hidden rounded-[2rem] border border-line bg-surface shadow-[0_35px_90px_-60px_rgba(39,35,31,.45)]">
         <div class="grid items-stretch lg:grid-cols-[1.05fr_.95fr]">
           <div class="p-8 sm:p-12 lg:p-16">
-            <p class="eyebrow reveal text-[11px] font-semibold uppercase text-accent" data-i18n="contact_eyebrow">Контакты</p>
             <h2 class="reveal mt-5 max-w-xl font-serif text-5xl leading-[.98] tracking-tightest sm:text-6xl" data-i18n-html="contact_title">Договоримся<br /><em class="font-normal italic">о съёмке?</em></h2>
-            <p class="reveal mt-6 max-w-lg text-base leading-relaxed text-soft" data-i18n="contact_sub">Напишите, кого хотите поснимать и когда вам удобно. Обсудим место и детали. Если проще по телефону — звоните.</p>
-            <p class="reveal mt-8 text-[13px] text-faint" data-i18n="contact_reply">Обычно отвечаю в течение дня.</p>
           </div>
 
           <div class="flex flex-col justify-center gap-4 border-t border-line bg-bg/60 p-6 sm:p-10 lg:border-l lg:border-t-0 lg:p-12">

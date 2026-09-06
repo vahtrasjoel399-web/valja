@@ -568,26 +568,12 @@
     applyLang(currentLang);
 
     /* ============================================================
-       COOKIE CONSENT
-    ============================================================ */
-    const cookieBanner = document.getElementById('cookieBanner');
-    const COOKIE_KEY = 'val_cookie_consent';
-    function showCookies() { cookieBanner.classList.remove('hidden'); }
-    function hideCookies() { cookieBanner.classList.add('hidden'); }
-    function setConsent(v) { localStorage.setItem(COOKIE_KEY, v); hideCookies(); }
-    if (!localStorage.getItem(COOKIE_KEY)) showCookies();
-    document.getElementById('cookieAccept').addEventListener('click', () => setConsent('accepted'));
-    document.getElementById('cookieDecline').addEventListener('click', () => setConsent('declined'));
-    document.getElementById('openCookies').addEventListener('click', showCookies);
-
-    /* ============================================================
        PRIVACY MODAL
     ============================================================ */
     const privacyModal = document.getElementById('privacyModal');
     function openPrivacy() { privacyModal.classList.remove('hidden'); privacyModal.classList.add('flex'); document.body.style.overflow = 'hidden'; }
     function closePrivacy() { privacyModal.classList.add('hidden'); privacyModal.classList.remove('flex'); document.body.style.overflow = ''; }
     document.getElementById('openPrivacy').addEventListener('click', openPrivacy);
-    document.getElementById('cookieMore').addEventListener('click', openPrivacy);
     document.getElementById('privacyClose').addEventListener('click', closePrivacy);
     privacyModal.addEventListener('click', e => { if (e.target === privacyModal) closePrivacy(); });
 

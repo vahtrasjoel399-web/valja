@@ -70,26 +70,14 @@
          class="hero-photo absolute inset-0 h-full w-full object-cover" />
     <div class="hero-shade absolute inset-0"></div>
 
-    <div class="relative z-10 mx-auto flex max-w-7xl w-full justify-center px-6 lg:px-10 pb-14 lg:pb-20 text-center">
+    <div class="hero-layout relative z-10 mx-auto flex max-w-7xl w-full px-6 lg:px-10 pb-14 lg:pb-20">
       <div class="hero-copy max-w-2xl">
       <h1 class="reveal font-serif text-white md:text-ink text-[clamp(3.3rem,7vw,6.6rem)] leading-[0.94] tracking-tightest" data-i18n-html="hero_title">
         Вы, ваши близкие<br />и <em class="italic font-normal">любимые моменты</em>
       </h1>
-      <p class="reveal mt-6 mx-auto max-w-lg text-white/90 md:text-soft text-base lg:text-lg leading-relaxed" data-i18n="hero_sub">
+      <p class="reveal mt-6 max-w-lg text-white/90 md:text-soft text-base lg:text-lg leading-relaxed" data-i18n="hero_sub">
         Снимаю портреты, пары, семьи и свадьбы. Если вы впервые на съёмке, подскажу, куда встать и что делать перед камерой.
       </p>
-      <div class="reveal mt-8 flex flex-wrap items-center justify-center gap-3">
-        <a href="https://www.instagram.com/valjashestero.ph/" target="_blank" rel="noopener noreferrer"
-           class="animated-cta inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-medium text-white hover:bg-accentDeep transition-colors duration-300 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-transparent">
-          <span data-i18n="hero_cta">Написать в Instagram</span>
-          <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></svg>
-        </a>
-        <a href="#portfolio"
-           class="inline-flex items-center gap-2 rounded-full border border-white/60 md:border-ink/25 px-7 py-3.5 text-sm font-medium text-white md:text-ink hover:bg-white/10 md:hover:bg-ink/5 transition-colors cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
-           data-i18n="hero_cta2">
-          Смотреть работы
-        </a>
-      </div>
       </div>
     </div>
 
@@ -217,12 +205,6 @@
     <div class="mx-auto max-w-7xl px-6 lg:px-10">
       <div class="mb-14 flex flex-col items-start gap-8 lg:flex-row lg:items-end lg:justify-between">
         <div class="max-w-2xl">
-          <div class="reveal">
-            <span class="mb-5 inline-flex items-center gap-2 rounded-full border border-line bg-sand px-3 py-1 text-[11px] font-semibold uppercase eyebrow text-accent">
-              <span class="h-1.5 w-1.5 rounded-full bg-accent"></span>
-              <span data-i18n="prices_eyebrow">Услуги и цены</span>
-            </span>
-          </div>
           <h2 class="reveal font-serif text-5xl lg:text-6xl tracking-tightest leading-[1.05]" style="transition-delay:.1s" data-i18n="prices_title">Съёмки и цены</h2>
         </div>
       </div>
@@ -432,23 +414,10 @@
         <p data-i18n="footer_copyright">© 2026 Valentina Šestero. Все права защищены.</p>
         <div class="flex items-center gap-5">
           <button type="button" id="openPrivacy" class="hover:text-ink transition-colors cursor-pointer" data-i18n="footer_privacy">Политика конфиденциальности</button>
-          <button type="button" id="openCookies" class="hover:text-ink transition-colors cursor-pointer" data-i18n="footer_cookies">Cookie-файлы</button>
         </div>
       </div>
     </div>
   </footer>
-
-  <!-- ============ COOKIE BANNER ============ -->
-  <div id="cookieBanner" class="fixed bottom-0 inset-x-0 z-50 hidden">
-    <div class="mx-auto max-w-3xl m-4 rounded-lg border border-line bg-surface/95 backdrop-blur-md p-5 shadow-[0_20px_50px_-24px_rgba(26,26,26,.5)] flex flex-col sm:flex-row sm:items-center gap-4">
-      <p class="flex-1 text-[13px] leading-relaxed text-soft" data-i18n="cookie_text">Мы используем cookie-файлы, чтобы сайт работал корректно и удобно. Продолжая, вы соглашаетесь с нашей политикой конфиденциальности.</p>
-      <div class="flex items-center gap-2 shrink-0">
-        <button id="cookieMore" class="text-[13px] font-medium text-accent underline underline-offset-2 hover:text-accentDeep transition-colors cursor-pointer" data-i18n="cookie_more">Подробнее</button>
-        <button id="cookieDecline" class="rounded-full border border-line px-4 py-2 text-[13px] font-medium text-soft hover:border-ink hover:text-ink transition-colors cursor-pointer" data-i18n="cookie_decline">Отклонить</button>
-        <button id="cookieAccept" class="rounded-full bg-accent px-4 py-2 text-[13px] font-medium text-white hover:bg-accentDeep transition-colors cursor-pointer" data-i18n="cookie_accept">Принять</button>
-      </div>
-    </div>
-  </div>
 
   <!-- ============ PRIVACY MODAL ============ -->
   <div id="privacyModal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/60 p-4" role="dialog" aria-modal="true">
